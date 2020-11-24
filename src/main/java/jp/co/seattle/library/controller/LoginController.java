@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Handles requests for the application home page.
  */
-@Controller  /** APIの入り口 */
+@Controller /** APIの入り口 */
 public class LoginController {
-	final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+    final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	@RequestMapping(value = "/",method = RequestMethod.GET)  //value＝＞実行した場所
-	public String first(Model model) {
-		return "login";  //jspファイル名
-	}
+    @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
+    public String first(Model model) {
+        return "login"; //jspファイル名
+    }
+
 }

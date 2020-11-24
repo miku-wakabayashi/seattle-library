@@ -12,7 +12,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@PropertySource({"classpath:/jdbc.properties"})
+@PropertySource({ "classpath:/jdbc.properties" })
 public class DBConfig {
 
     @Autowired
@@ -30,11 +30,11 @@ public class DBConfig {
 
     @Bean
     public DataSourceTransactionManager transactionManager() {
-      return new DataSourceTransactionManager(datasource());
+        return new DataSourceTransactionManager(datasource());
     }
 
     @Bean
     public JdbcTemplate jdbcTemplate() {
-      return new JdbcTemplate(datasource());
+        return new JdbcTemplate(datasource());
     }
 }

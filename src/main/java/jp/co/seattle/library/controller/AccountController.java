@@ -15,49 +15,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
 
-
 /**
  * Handles requests for the application home page.
  */
-@Controller  //APIの入り口
+@Controller //APIの入り口
 public class AccountController {
-	final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+    final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private BooksService booksService;
-	@RequestMapping(value = "/new",method = RequestMethod.POST)  //value＝actionで指定したパラメータ
-		public String createAccount(Model model){
-		return "new";
-	}
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private BooksService booksService;
 
-	/**
-	 * 新規アカウント作成
-	 *
-	 * @param email
-	 * @param name
-	 * @param password
-	 * @param model
-	 * @return　ホーム画面に遷移
-	 */
-	@Transactional
-	@RequestMapping(value = "/newAccount", method = RequestMethod.POST)
-	public String createAccount(Locale locale,
-			@RequestParam("email") String email,
-			@RequestParam("name") String name,
-			@RequestParam("password1") String password,
-			Model model) {
-		logger.info("Welcome register! The client locale is {}.", locale);
+    @RequestMapping(value = "/new", method = RequestMethod.POST) //value＝actionで指定したパラメータ
+    public String createAccount(Model model) {
+        return "new";
+    }
 
-		// 本当は画面からパラメータを受け取って登録したい気分・・・
-		String createUser="INSERT INTO `users` (`email`, `name`,`password`) VALUES ('"+email+"','"+name+"','"+password+"')";
-		jdbcTemplate.update(createUser);
+    /**
+     * 新規アカウント作成
+     *
+     * @param email
+     * @param name
+     * @param password
+     * @param model
+     * @return　ホーム画面に遷移
+     */
+    @Transactional
+    @RequestMapping(value = "/newAccount", method = RequestMethod.POST)
+    public String createAccount(Locale locale,
+            @RequestParam("email") String email,
+            @RequestParam("name") String name,
+            @RequestParam("password1") String password,
+            Model model) {
+        logger.info("Welcome register! The client locale is {}.", locale);
 
-		model.addAttribute("items", booksService.getBookList());
+        // 本当は画面からパラメータを受け取って登録したい気分・・・
+        String createUser = "INSERT INTO `users` (`email`, `name`,`password`) VALUES ('" + email + "','" + name + "','"
+                + password + "')";
+        jdbcTemplate.update(createUser);
 
-		return "home";
-	}
+        model.addAttribute("items", booksService.getBookList());
 
-
+        return "home";
+    }
 }

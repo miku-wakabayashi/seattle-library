@@ -8,32 +8,33 @@ import lombok.Data;
 @Data
 public class BookInfo {
 
-	private int bookId;
+    private int bookId;
 
-	private String title;
+    private String title;
 
-	private String author;
+    private String author;
 
-	private String publisher;
+    private String publisher;
 
-	private String description;
+    private String description;
 
-	private String thumbnail;
+    private String thumbnail;
 
-	public String status;
+    public String status;
 
-	public BookInfo() {
+    public BookInfo() {
 
-	}
+    }
 
-	public BookInfo(int bookId, String title, String author,String publisher, String description, String thumbnail, String status) {
-		this.bookId=bookId;
-		this.title=title;
-		this.author=author;
-		this.publisher=publisher;
-		this.description=description;
-		this.thumbnail = thumbnail;
-		this.status = status;
-	}
+    public BookInfo(int bookId, String title, String author, String publisher, String description, String thumbnail,
+            String status) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.description = description;
+        this.thumbnail = thumbnail;
+        this.status = status;
+    }
 
 }

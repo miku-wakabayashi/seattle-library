@@ -17,36 +17,35 @@ import jp.co.seattle.library.service.BooksService;
 /**
  * Handles requests for the application home page.
  */
-@Controller  //APIの入り口
+@Controller //APIの入り口
 public class DeleteBookController {
-	final static Logger logger = LoggerFactory.getLogger(DeleteBookController.class);
+    final static Logger logger = LoggerFactory.getLogger(DeleteBookController.class);
 
-	@Autowired
-	private BooksService booksService;
+    @Autowired
+    private BooksService booksService;
 
+    /**
+     * 削除処理サンプルメソッド
+     *
+     * @param locale ロケール情報
+     * @param model モデル情報
+     * @return 遷移先画面名
+     */
+    @Transactional
+    @RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
+    public String deleteBook(
+            Locale locale,
+            @RequestParam("bookId") Integer bookId,
+            Model model) {
+        logger.info("Welcome delete! The client locale is {}.", locale);
 
-	/**
-	 * 削除処理サンプルメソッド
-	 *
-	 * @param locale ロケール情報
-	 * @param model モデル情報
-	 * @return 遷移先画面名
-	 */
-	@Transactional
-	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
-	public String deleteBook(
-			Locale locale,
-			@RequestParam("bookId") Integer bookId,
-			Model model){
-		logger.info("Welcome delete! The client locale is {}.", locale);
+        booksService.deleteBook(bookId);
+        model.addAttribute("resultMessage", "削除完了");
 
-		booksService.deleteBook(bookId);
-	   model.addAttribute("resultMessage", "削除完了");
+        model.addAttribute("bookList", booksService.getBookList());
 
-		model.addAttribute("bookList",booksService.getBookList());
+        return "home";
 
-		return "home";
-
-	}
+    }
 
 }
