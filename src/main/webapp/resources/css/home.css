@@ -1,0 +1,78 @@
+header{height:100px;}
+
+body{margin:0;}
+
+.menu0:hover{border:1px solid gray; border-radius:5px; opacity:1; padding:0;}
+.menu2{list-style:none; margin:0; color:white;}
+.menu3{list-style:none; border:1px solid black; padding: 7px 45px; border-radius:5px; border:none; background-color:#f0f8ff;}
+.m{width:100%; text-align:center; margin-top:70px;}
+.m ul{margin-top:60px;}
+.m span:hover{animation: flash 3s; height:50px;}
+@keyframes flash{0% { background: #20b2aa; } 50% { background: #96e9e6; } 100% { background: #20b2aa; }}
+.main_search{width:500px; border-radius:20px; font-size:20px; padding:10px 13px;}
+.main_search:hover{box-shadow: 10px 10px 25px 15px rgba(0, 0, 0, 0.2);}
+
+.top{float:left; width:350px; text-align:center;}
+.top3{float:left; width:350px; margin:0 0 100px 30px; text-align:center;}
+.top p{display:inline-block; vertical-align: top;}
+
+input {outline:0; border:0; background: transparent;}
+
+a:hover{opacity:0.5;　transform: scale(1.2);}
+.fas{position:absolute; margin-top:46px; margin-left:-30px;}
+.icon{width:120px; margin:5px 0 0 10px;}
+.icon2{width:160px;}
+.icon1{width:34px; vertical-align:top; margin-top:28px;}
+
+.pic{width:100%; text-align:right;}
+.pic .mes{position:absolute; width:500px; height:300px; background-color:#dc143c; margin-top:80px;}
+.pic h1{position:relative; padding:80px 0 0 40px; text-align:left; z-index:100; float:left; color:white;}
+
+.top-right{float:right; text-align:right; height:90px; z-index:10; position:relative; margin-top:5px; margin-right:5px;}
+.top-right li{display:inline-block; font-size:16px; list-style:none; width:80px; margin:35px 30px 0 0;}
+.search1{border-radius:20px; font-size:18px; width:370px; padding:5px 10px 0; margin-top:40px; z-index:10;}
+.search1:hover{box-shadow: 0 0 2px black;}
+
+.heads{clear:both; height:500px; width:100%; text-align:center; margin-top:20px;}
+
+.num{clear:both; border-top:1px solid #f0f8ff; border-bottom:1px solid #f0f8ff;height:60px; padding:20px 35px 0;}
+.num p{display:inline-block; font-size:12px;}
+
+.num1{clear:both; height:60px; padding:10px 30px 0; background-color:white; margin:20px 20px 0;}
+.num1 h1{display:inline-block; font-size:25px; margin:5px;}
+.num2{clear:both; height:60px; padding:10px 30px 0; background-color:white; margin:20px 20px 40px; width:150px;}
+.num2 h1{display:inline-block; font-size:25px; margin:5px;}
+
+.main{background-color:#f5f5f5; padding:80px 0 0; height:1650px;}
+
+.type{width: 200px; float:left;}
+.type1{text-align:center;}
+.type li{display:inline-block;}
+.type input{width:200px;}
+
+.mains{clear:both; display:flex; overflow: scroll; margin:0 20px 50px; overflow-y: hidden; background-color:white;}
+.mains::before{content:""; display: block; width:16%; order:1;}
+.mains::after{content:""; display: block; width:16%;}
+
+.contents { width:16%; flex: none;}
+.contents a{text-decoration: none; color:black;}
+.con{background-color:white; width:20%; padding-top:30px;}
+.center{display:flex; justify-content:space-around; margin-bottom:50px;}
+.body{width:100%; text-align:center;}
+.body form{border:none; display:inline-block;}
+
+.addcontainer .ti{display:inline-block; vertical-align: top; list-style:none; width:80px; text-align:left;}
+.addcontainer hr{margin:10px 42px; width:400px;}
+.addcontainer ul{padding:0;}
+
+.get{padding:8px; width:400px;}
+
+.care{padding:0 10px;margin-left:290px; display:inline-block; vertical-align: top; font-size:10px;}
+.care1{background-color:gray; color:white;}
+.care2{background-color:red; color:white;}
+
+.bookti{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size:16px; height: 50px; margin:30px auto 0;}
+.detabu{display:inline-block; vertical-align: top; font-size:16px;}
+.detabook{display:inline-block; vertical-align:top; margin-left:20px; width:450px;}
+.editbutton{width:100%; text-align:right;}
+
