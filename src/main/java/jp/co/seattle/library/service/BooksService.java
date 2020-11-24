@@ -1,6 +1,5 @@
 package jp.co.seattle.library.service;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -21,103 +20,105 @@ import jp.co.seattle.library.dto.BookInfo;
 //APIの入り口 APIとは、他のソフトウェアが外部から自分のソフトウェアへアクセスし利用できるようにしたもの
 //ソフトウェアコンポーネントが互いにやりとりするのに使用するインタフェースの仕様
 public class BooksService {
-	final static Logger logger = LoggerFactory.getLogger(BooksService.class);
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+    final static Logger logger = LoggerFactory.getLogger(BooksService.class);
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-	/**
-	 * 書籍リストを取得する
-	 *
-	 * @return 書籍リスト
-	 */
-	public List<BookInfo> getBookList() {
+    /**
+     * 書籍リストを取得する
+     *
+     * @return 書籍リスト
+     */
+    public List<BookInfo> getBookList() {
 
-		// JSPに渡すデータを設定する
-		RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-		List<BookInfo> Booklist = jdbcTemplate.query("select * from books",rowMapper);
-		return Booklist;
-	}
+        // JSPに渡すデータを設定する
+        RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
+        List<BookInfo> Booklist = jdbcTemplate.query("select * from books", rowMapper);
+        return Booklist;
+    }
 
-	/**
-	 * 書籍IDに紐づく書籍情報を取得する
-	 *
-	 * @param bookId
-	 * @return 書籍情報
-	 */
-	public BookInfo getBookInfo(int bookId) {
+    /**
+     * 書籍IDに紐づく書籍情報を取得する
+     *
+     * @param bookId
+     * @return 書籍情報
+     */
+    public BookInfo getBookInfo(int bookId) {
 
-		// JSPに渡すデータを設定する
-		RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-		String sql ="SELECT * from `books` WHERE id =" + bookId;
-		logger.info(sql);
-		BookInfo bookInfo = jdbcTemplate.queryForObject(sql,rowMapper);
-		return bookInfo;
-	}
+        // JSPに渡すデータを設定する
+        RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
+        String sql = "SELECT * from `books` WHERE id =" + bookId;
+        logger.info(sql);
+        BookInfo bookInfo = jdbcTemplate.queryForObject(sql, rowMapper);
+        return bookInfo;
+    }
 
+    public int getMaxBookId() {
 
-	public int getMaxBookId() {
+        int bookMaxId = jdbcTemplate.queryForObject(
+                "select Max(book_id) as maxId from books ORDER BY id DESC", Integer.class);
 
-		int bookMaxId = jdbcTemplate.queryForObject(
-				"select Max(book_id) as maxId from books ORDER BY id DESC",Integer.class);
+        return bookMaxId;
+    }
 
-		return bookMaxId;
-	}
+    /**
+     * 書籍情報を更新する
+     *
+     * @param bookId
+     * @param title
+     * @param author
+     * @param publisher
+     * @param description
+     * @param thumbnail
+     */
+    public void updateBook(int bookId, String title, String author, String publisher, String description,
+            String thumbnail) {
 
+        String sql = "UPDATE  `books ` SET title ='" + title + "',author ='" + author + "',publisher ='" + publisher
+                + "',description='" + description + "',thumbnail='" + thumbnail + "' WHERE id =" + bookId;
+        jdbcTemplate.update(sql);
+    }
 
-	/**
-	 * 書籍情報を更新する
-	 *
-	 * @param bookId
-	 * @param title
-	 * @param author
-	 * @param publisher
-	 * @param description
-	 * @param thumbnail
-	 */
-	public void updateBook(int bookId,String title,String author, String publisher, String description, String thumbnail) {
+    /**
+     * 書籍を登録する
+     *
+     * @param title
+     * @param author
+     * @param publisher
+     * @param description
+     * @param thumbnail
+     */
+    public void registerBook(String title, String author, String publisher, String description, String thumbnail,
+            Date publishDate) {
+        String sql = "INSERT INTO `books` (``title`, `author`,`publisher`,`description`,`thumbnail`,`status`,`update_date`,`del_flg`,`PUBLISH_DATE`) VALUES ('"
+                + title + "','" + author + "','" + publisher + "','" + description + "','" + thumbnail
+                + "','0',sysdate()," + publishDate + ")";
+        jdbcTemplate.update(sql);
+    }
 
-		String sql="UPDATE  `books ` SET title ='"+title+"',author ='"+author+"',publisher ='"+publisher+"',description='"+description+"',thumbnail='"+thumbnail+"' WHERE id ="+bookId;
-		jdbcTemplate.update(sql);
-	}
+    /**
+     * BookIdが最大の書籍情報を取得する
+     *
+     * @return 書籍情報
+     */
+    public BookInfo getNewerBookInfo() {
 
-	/**
-	 * 書籍を登録する
-	 *
-	 * @param title
-	 * @param author
-	 * @param publisher
-	 * @param description
-	 * @param thumbnail
-	 */
-	public void registerBook(String title, String author, String publisher, String description, String thumbnail, Date publishDate) {
-		String sql="INSERT INTO `books` (``title`, `author`,`publisher`,`description`,`thumbnail`,`status`,`update_date`,`del_flg`,`PUBLISH_DATE`) VALUES ('"+title+"','"+author+"','"+publisher+"','"+description+"','"+thumbnail+"','0',sysdate(),"+publishDate+")";
-		jdbcTemplate.update(sql);
-	}
+        // JSPに渡すデータを設定する
+        RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
+        String sql = "SELECT * from `books` WHERE max(id)";
+        logger.info(sql);
+        BookInfo Booklist = jdbcTemplate.queryForObject(sql, rowMapper);
+        return Booklist;
+    }
 
+    /**
+     * 論理削除処理を行う
+     *
+     * @param bookId
+     */
+    public void deleteBook(Integer bookId) {
+        String sql = "UPDATE  `books ` SET  del_flg ='1'" + " WHERE id =" + bookId;
+        jdbcTemplate.update(sql);
 
-	/**
-	 * BookIdが最大の書籍情報を取得する
-	 *
-	 * @return 書籍情報
-	 */
-	public BookInfo getNewerBookInfo() {
-
-			// JSPに渡すデータを設定する
-			RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-			String sql ="SELECT * from `books` WHERE max(id)";
-			logger.info(sql);
-			BookInfo Booklist = jdbcTemplate.queryForObject(sql,rowMapper);
-			return Booklist;
-	}
-
-	/**
-	 * 論理削除処理を行う
-	 *
-	 * @param bookId
-	 */
-	public void deleteBook(Integer bookId) {
-		String sql="UPDATE  `books ` SET  del_flg ='1'"+" WHERE id ="+bookId;
-		jdbcTemplate.update(sql);
-
-	}
+    }
 }
