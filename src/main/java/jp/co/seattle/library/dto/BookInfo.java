@@ -20,21 +20,21 @@ public class BookInfo {
 
     private String thumbnail;
 
-    public String status;
+    private String publishDate;
 
     public BookInfo() {
 
     }
 
     public BookInfo(int bookId, String title, String author, String publisher, String description, String thumbnail,
-            String status) {
+            String publishDate) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.description = description;
         this.thumbnail = thumbnail;
-        this.status = status;
+        this.publishDate = publishDate;
     }
 
 }

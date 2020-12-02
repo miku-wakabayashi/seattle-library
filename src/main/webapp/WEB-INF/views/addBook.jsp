@@ -34,42 +34,70 @@
 		<p>書籍データの追加</p>
 	</div>
 	<div class="body">
-	<c:if test="${empty bookList}">
 		<form action="<%=request.getContextPath()%>/insertBook" method="post" enctype="multipart/form-data" id="data_upload_form">
-		<div class="type">
-			<ul  style="padding:0;">
-				<li style="margin-top:20px;">書籍の写真</li>
-				<li style="font-size:7px; background-color:red; padding:0 10px; margin-left:55px; color:white;">必須</li>
-			</ul>
-	        <div class="content_navi">
-	        	<div class="preview">
-					<img src="resources/img/noImg.png" style="width:100px">
-              	</div>
-             	<input type="file" accept="image/*" name="thumbnail" id="thumbnail">
-
+			<div class="type">
+				<ul  style="padding:0;">
+					<li style="margin-top:20px;">書籍の写真</li>
+					<li style="font-size:7px; background-color:gray; padding:0 10px; margin-left:55px; color:white;">任意</li>
+				</ul>
+	        	<div class="content_navi">
+	        		<div class="preview">
+						<img src="resources/img/noImg.png" style="width:100px">
+              		</div>
+             		<input type="file" accept="image/*" name="thumbnail" id="thumbnail">
+				</div>
 			</div>
-		</div>
-		<div class="all" style="float:left; padding-left:20px; margin-top:20px;">
-			<div class="addcontainer">
-				<ul><li class="ti">タイトル</li><li class="care care2">必須</li></ul>
-					<input class="get" type="text" name="title" placeholder="タイトル" autocomplete="off" required><hr>
+			<div class="all" style="float:left; padding-left:20px; margin-top:20px;">
+				<div class="addcontainer">
+					<ul><li class="ti">タイトル</li><li class="care care2">必須</li></ul>
+					<c:if test="${!empty bookInfo}">
+						<input class="get" type="text" name="title" value="${bookInfo.title}" placeholder="タイトル" autocomplete="off" required><hr>
+					</c:if>
+					<c:if test="${empty bookInfo}">
+						<input class="get" type="text" name="title" placeholder="タイトル" autocomplete="off" required><hr>
+					</c:if>
+				</div>
+				<div class="addcontainer">
+					<ul><li class="ti">著者名</li><li class="care care2">必須</li></ul>
+					<c:if test="${!empty bookInfo}">
+						<input class="get" type="text" name="author" value="${bookInfo.author}" placeholder="著者名" autocomplete="off" required><hr>
+					</c:if>
+					<c:if test="${empty bookInfo}">
+						<input class="get" type="text" name="author" placeholder="著者名" autocomplete="off" required><hr>
+					</c:if>
+				</div>
+				<div class="addcontainer">
+					<ul><li class="ti">出版社</li><li class="care care2">必須</li></ul>
+					<c:if test="${!empty bookInfo}">
+						<input class="get" type="text" name="publisher" value="${bookInfo.publisher}" placeholder="出版社"><hr>
+					</c:if>
+					<c:if test="${empty bookInfo}">
+						<input class="get" type="text" name="publisher" placeholder="出版社"><hr>
+					</c:if>
+				</div>
+				<div class="addcontainer">
+					<ul><li class="ti">出版日</li><li class="care care2">必須</li></ul>
+					<c:if test="${!empty bookInfo}">
+						<input class="get" type="text" name="publishDate" value="${bookInfo.publishDateStr}" placeholder="出版日"><hr>
+					</c:if>
+					<c:if test="${empty bookInfo}">
+						<input class="get" type="text" name="publishDate" placeholder="出版日"><hr>
+					</c:if>
+				</div>
+				<div class="addcontainer">
+					<ul><li class="ti">説明文</li><li class="care care1">任意</li></ul>
+					<c:if test="${!empty bookInfo}">
+						<input class="get" type="text" name="description" value="${bookInfo.description}" placeholder="説明文"><hr>
+					</c:if>
+					<c:if test="${empty bookInfo}">
+						<input class="get" type="text" name="description" placeholder="説明文"><hr>
+					</c:if>
+				</div>
 			</div>
-			<div class="addcontainer">
-				<ul><li class="ti">著者名</li><li class="care care2">必須</li></ul>
-					<input class="get" type="text" name="author" placeholder="著者名" autocomplete="off" required><hr>
+			<div>
+				<button type="submit" style="padding:15px 90px; margin-top:60px; border-radius:30px; background-color:#4169e1; color:white; text-align:center; font-size:15px;">作成</button>
 			</div>
-			<div class="addcontainer">
-				<ul><li class="ti">出版社</li><li class="care care1">任意</li></ul>
-					<input class="get" type="text" name="publisher" placeholder="出版社"><hr>
-			</div>
-			<div class="addcontainer">
-				<ul><li class="ti">説明文</li><li class="care care1">任意</li></ul>
-					<input class="get" type="text" name="description" placeholder="説明文"><hr>
-			</div>
-		</div>
-		<div><button type="submit" style="padding:15px 90px; margin-top:60px; border-radius:30px; background-color:#4169e1; color:white; text-align:center; font-size:15px;">作成</button></div>
 		</form>
-	</c:if>
 	</div>
 </body>
 </html>

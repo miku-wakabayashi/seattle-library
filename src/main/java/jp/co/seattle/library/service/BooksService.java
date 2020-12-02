@@ -1,6 +1,5 @@
 package jp.co.seattle.library.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,6 +22,9 @@ public class BooksService {
     final static Logger logger = LoggerFactory.getLogger(BooksService.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private static final String DEL_FLG_OFF = "0";
+    private static final String STATUS_FREE = "0";
 
     /**
      * 書籍リストを取得する
@@ -47,9 +49,10 @@ public class BooksService {
 
         // JSPに渡すデータを設定する
         RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-        String sql = "SELECT * from `books` WHERE id =" + bookId;
+        String sql = "SELECT * from books WHERE id =" + bookId;
         logger.info(sql);
         BookInfo bookInfo = jdbcTemplate.queryForObject(sql, rowMapper);
+        bookInfo.setPublishDate(bookInfo.getPublishDate());
         return bookInfo;
     }
 
@@ -88,11 +91,12 @@ public class BooksService {
      * @param description
      * @param thumbnail
      */
-    public void registerBook(String title, String author, String publisher, String description, String thumbnail,
-            Date publishDate) {
-        String sql = "INSERT INTO `books` (``title`, `author`,`publisher`,`description`,`thumbnail`,`status`,`update_date`,`del_flg`,`PUBLISH_DATE`) VALUES ('"
-                + title + "','" + author + "','" + publisher + "','" + description + "','" + thumbnail
-                + "','0',sysdate()," + publishDate + ")";
+    public void registBook(BookInfo bookInfo) {
+        String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail,update_date,del_flg,status) VALUES ('"
+                + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
+                + bookInfo.getPublishDate() + ",'"
+                + bookInfo.getDescription() + "','" + bookInfo.getThumbnail()
+                + "',sysdate(),'" + DEL_FLG_OFF + "','" + STATUS_FREE + "')";
         jdbcTemplate.update(sql);
     }
 
@@ -105,7 +109,7 @@ public class BooksService {
 
         // JSPに渡すデータを設定する
         RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-        String sql = "SELECT * from `books` WHERE max(id)";
+        String sql = "SELECT * from books WHERE id = (select max(id) from books)";
         logger.info(sql);
         BookInfo Booklist = jdbcTemplate.queryForObject(sql, rowMapper);
         return Booklist;
