@@ -48,7 +48,7 @@
 			<p style="text-align:right;">著者名：${bookInfo.author}</p>
 			<div class="editbutton">
 				<form method="post" action="editBook">
-					<button type="submit" value=${bookInfo.bookId} name="bookId" class="detabu" style="margin-right:20px;">編集</button>
+					<button type="submit" value=${bookInfo.bookId} name="bookId" class="detabu">編集</button>
 				</form>
 				<form method="post" action="deleteBook">
 					<button type="submit" value=${bookInfo.bookId} name="bookId" class="detabu" >削除</button>

@@ -1,5 +1,6 @@
 package jp.co.seattle.library.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 
 import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
 
 /**
  * Handles requests for the application home page.
@@ -24,19 +26,20 @@ public class BooksService {
     private JdbcTemplate jdbcTemplate;
 
     private static final String DEL_FLG_OFF = "0";
-    private static final String STATUS_FREE = "0";
 
     /**
      * 書籍リストを取得する
      *
      * @return 書籍リスト
+     * @throws SQLException
      */
     public List<BookInfo> getBookList() {
 
         // JSPに渡すデータを設定する
-        RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-        List<BookInfo> Booklist = jdbcTemplate.query("select * from books", rowMapper);
-        return Booklist;
+        List<BookInfo> getedBookList = jdbcTemplate.query("select * from books where del_flg = '0'",
+                new BookInfoRowMapper());
+
+        return getedBookList;
     }
 
     /**
@@ -48,21 +51,25 @@ public class BooksService {
     public BookInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する
-        RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-        String sql = "SELECT * from books WHERE id =" + bookId;
+        String sql = "SELECT * from books WHERE id =" + bookId + " and del_flg = '0'";
         logger.info(sql);
-        BookInfo bookInfo = jdbcTemplate.queryForObject(sql, rowMapper);
+        BookInfo bookInfo = jdbcTemplate.queryForObject(sql, new BookInfoRowMapper());
         bookInfo.setPublishDate(bookInfo.getPublishDate());
         return bookInfo;
     }
 
-    public int getMaxBookId() {
-
-        int bookMaxId = jdbcTemplate.queryForObject(
-                "select Max(book_id) as maxId from books ORDER BY id DESC", Integer.class);
-
-        return bookMaxId;
-    }
+    //    /**
+    //     * 書籍IDの最大値を取得する
+    //     *
+    //     * @return 書籍ID
+    //     */
+    //    public int getMaxBookId() {
+    //
+    //        int bookMaxId = jdbcTemplate.queryForObject(
+    //                "select Max(book_id) as maxId from books ORDER BY id DESC", Integer.class);
+    //
+    //        return bookMaxId;
+    //    }
 
     /**
      * 書籍情報を更新する
@@ -74,11 +81,12 @@ public class BooksService {
      * @param description
      * @param thumbnail
      */
-    public void updateBook(int bookId, String title, String author, String publisher, String description,
-            String thumbnail) {
+    public void updateBook(BookInfo bookInfo) {
 
-        String sql = "UPDATE  `books ` SET title ='" + title + "',author ='" + author + "',publisher ='" + publisher
-                + "',description='" + description + "',thumbnail='" + thumbnail + "' WHERE id =" + bookId;
+        String sql = "UPDATE  `books ` SET title ='" + bookInfo.getTitle() + "',author ='" + bookInfo.getAuthor()
+                + "',publisher ='" + bookInfo.getPublisher()
+                + "',description='" + bookInfo.getDescription() + "',thumbnail='" + bookInfo.getThumbnail()
+                + "' WHERE id =" + bookInfo.getBookId();
         jdbcTemplate.update(sql);
     }
 
@@ -92,11 +100,12 @@ public class BooksService {
      * @param thumbnail
      */
     public void registBook(BookInfo bookInfo) {
-        String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail,update_date,del_flg,status) VALUES ('"
+
+        String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail,update_date,del_flg) VALUES ('"
                 + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
                 + bookInfo.getPublishDate() + ",'"
                 + bookInfo.getDescription() + "','" + bookInfo.getThumbnail()
-                + "',sysdate(),'" + DEL_FLG_OFF + "','" + STATUS_FREE + "')";
+                + "',sysdate(),'" + DEL_FLG_OFF + "')";
         jdbcTemplate.update(sql);
     }
 
@@ -109,7 +118,7 @@ public class BooksService {
 
         // JSPに渡すデータを設定する
         RowMapper<BookInfo> rowMapper = new BeanPropertyRowMapper<BookInfo>(BookInfo.class);
-        String sql = "SELECT * from books WHERE id = (select max(id) from books)";
+        String sql = "SELECT * from books WHERE id = (select max(id) from books) and del_flg = '0'";
         logger.info(sql);
         BookInfo Booklist = jdbcTemplate.queryForObject(sql, rowMapper);
         return Booklist;
@@ -121,7 +130,7 @@ public class BooksService {
      * @param bookId
      */
     public void deleteBook(Integer bookId) {
-        String sql = "UPDATE  `books ` SET  del_flg ='1'" + " WHERE id =" + bookId;
+        String sql = "UPDATE  books SET  del_flg ='1'" + " WHERE id =" + bookId;
         jdbcTemplate.update(sql);
 
     }
