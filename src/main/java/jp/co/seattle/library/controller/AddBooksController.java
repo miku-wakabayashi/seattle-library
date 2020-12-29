@@ -1,13 +1,12 @@
 package jp.co.seattle.library.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.ThumbnailService;
 
 /**
  * Handles requests for the application home page.
@@ -32,6 +32,9 @@ public class AddBooksController {
 
     @Autowired
     private BooksService booksService;
+
+    @Autowired
+    private ThumbnailService thumbnailService;
 
     private static final String AUTHOR_ERROR = "著者名は30文字以内で入力してください";
     private static final String PUBLISHDATE_ERROR = "出版日はYYYYMMDD形式で入力してください";
@@ -54,7 +57,7 @@ public class AddBooksController {
             @RequestParam("description") String description,
             @RequestParam("thumbnail") MultipartFile file,
             @RequestParam("publishDate") String publishDateStr,
-            Model model) {
+            Model model, HttpServletRequest request) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
@@ -64,12 +67,11 @@ public class AddBooksController {
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
         bookInfo.setDescription(description);
+
         // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
-        logger.info(file.getName());
         bookInfo.setThumbnail(thumbnail);
         bookInfo.setPublishDate(publishDateStr);
-        logger.info(thumbnail);
 
         boolean isValid = true;
 
@@ -100,7 +102,7 @@ public class AddBooksController {
         if (!file.isEmpty()) {
             try {
                 // サムネイル画像をアップロード
-                uploadThumbnail(thumbnail, file);
+                thumbnailService.uploadThumbnail(thumbnail, file);
             } catch (IOException e) {
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
@@ -116,25 +118,7 @@ public class AddBooksController {
         model.addAttribute("resultMessage", "登録完了");
         // 書籍IDが最大の書籍情報を取得する
         model.addAttribute("bookInfo", booksService.getNewerBookInfo());
-
         return "details";
-    }
-
-    ////////////////
-    // 下請けメソッド
-    /////
-    /**
-     * サムネイル画像をアップロードする
-     * @param thumbnail
-     * @throws IOException
-     */
-    private void uploadThumbnail(String thumbnail, MultipartFile file) throws IOException {
-        // アップロードファイルを置く
-        File uploadFile = new File("./src/main/webapp/resources/thumbnails/" + thumbnail);
-        byte[] bytes = file.getBytes();
-        BufferedOutputStream uploadFileStream = new BufferedOutputStream(new FileOutputStream(uploadFile));
-        uploadFileStream.write(bytes); //？
-        uploadFileStream.close();
     }
 
 }

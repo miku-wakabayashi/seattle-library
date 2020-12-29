@@ -42,6 +42,7 @@
 								<c:if test="${!empty bookInfo.thumbnail}">
 									<img src="resources/thumbnails/${bookInfo.thumbnail}" style="width:200px;height:300px">
 								</c:if>
+								${bookInfo.bookId}
 								<input type="hidden" name="bookId" value=${bookInfo.bookId}>
 							</a>
 						</form>
@@ -49,12 +50,6 @@
 						<p>著者：${bookInfo.author}</p>
 						<p>出版社：${bookInfo.publisher}</p>
 						<p>出版日：${bookInfo.description}</p>
-						<c:if test="${bookInfo.status == '0'}">
-							<div style="color: red">${bookInfo.status == '0'}</div>
-						</c:if>
-						<c:if test="${bookInfo.status == '1'}">
-							<div style="color: red">貸出不可</div>
-						</c:if>
 						---------------------------------------------------------------------
 					</div>
  				</c:forEach>

@@ -78,7 +78,7 @@
 				<div class="addcontainer">
 					<ul><li class="ti">出版日</li><li class="care care2">必須</li></ul>
 					<c:if test="${!empty bookInfo}">
-						<input class="get" type="text" name="publishDate" value="${bookInfo.publishDateStr}" placeholder="出版日"><hr>
+						<input class="get" type="text" name="publishDate" value="${bookInfo.publishDate}" placeholder="出版日"><hr>
 					</c:if>
 					<c:if test="${empty bookInfo}">
 						<input class="get" type="text" name="publishDate" placeholder="出版日"><hr>
