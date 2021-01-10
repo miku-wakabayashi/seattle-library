@@ -124,17 +124,16 @@ input[type=button].primary {
 /* 共通ヘッダー */
 header {
     display: flex;
-    flex-direction: row;
+    align-items: center;
     border-bottom: solid 1px #cbcbcb;
-    padding:10px 20px;
+    padding:10px;
 }
+
 /* 共通ヘッダー（左） */
 header > .left {
     display:flex;
     align-items: center;
-    justify-content: center;
-    flex-grow: 0;
-    flex: 1;
+    justify-content: left;
 }
 header > .left > a {
     display:flex;
@@ -146,7 +145,7 @@ header > .left > a {
 header > .center {
     display:flex;
     align-items: center;
-	justify-content: flex-start;
+    justify-content: flex-start;
     flex-basis: auto;
     flex: 5;
 }
@@ -212,20 +211,20 @@ header > .center > .search > .submitter {
 /* 共通ヘッダー（右） */
 header > .right {
     display:flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-grow: 0;
-    flex: 1;
+    margin-left: auto;
+}
+header > .right > ul{
+    display:flex;
+}
+header > .right > ul > li{
+    margin-right: 15px;
 }
 /* 共通ヘッダー（右）アンカー */
-header > .right > a {
+header > .right a {
     font-size: 90%;
     margin: 10px;
 }
-header > .right > a:hover {
-    color:#cc3333;
-    text-decoration: underline;
-}
+
 /* ページナビゲーション */
 main > .operation {
     padding: 15px;
@@ -241,29 +240,16 @@ main > .operation > .keyword {
     color:#ed9017;
 }
 /* メインコンテンツ */
-main > .contents {
-    display: flex;
-}
-/* サイドナビ */
-main > .contents > .content_navi {
-    flex: 1;
-    padding:15px;
+main {
+    margin: 20px;
+    /* min-height: 1024px; */
 }
 /* コンテンツ本体 */
-main > .contents > .content_body {
-    flex: 5;
-    padding:15px;
-    border-left: solid 1px #cecece;
-    border-right: solid 1px #cecece;
-    min-height: 1024px;
+main .content_body {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-}
-/* 操作パネル */
-main > .contents > .content_side {
-    flex: 1;
-    padding:15px;
-}
 /* 共通フッター */
 footer {
     width: 100%;
@@ -276,14 +262,17 @@ footer > .copyright {
     text-align: center;
     font-size: 100%;
 }
-.books{
-	display: inline-block;
-	width:33%;
 
+ul {
+  list-style: none;
 }
 
-.books li{
-	list-style:none;
-	margin:2px;
-	font-size: 1２px;
+h1 {
+  padding: 0.4em 0.5em;
+  color: #707070;
+  border-left: solid 5px #7db4e6;
+}
+.error_msg {
+    color: red;
+    font-weight: bold;
 }
