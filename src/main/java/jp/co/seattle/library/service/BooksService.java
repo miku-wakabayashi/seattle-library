@@ -1,6 +1,7 @@
 package jp.co.seattle.library.service;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ public class BooksService {
     private JdbcTemplate jdbcTemplate;
 
     private static final String DEL_FLG_OFF = "0";
+
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
      * 書籍リストを取得する
@@ -83,9 +86,10 @@ public class BooksService {
      */
     public void updateBook(BookInfo bookInfo) {
 
-        String sql = "UPDATE  `books ` SET title ='" + bookInfo.getTitle() + "',author ='" + bookInfo.getAuthor()
+        String sql = "UPDATE books SET title ='" + bookInfo.getTitle() + "',author ='" + bookInfo.getAuthor()
                 + "',publisher ='" + bookInfo.getPublisher()
                 + "',description='" + bookInfo.getDescription() + "',thumbnail='" + bookInfo.getThumbnail()
+                + "',update_date='" +timestamp
                 + "' WHERE id =" + bookInfo.getBookId();
         jdbcTemplate.update(sql);
     }
