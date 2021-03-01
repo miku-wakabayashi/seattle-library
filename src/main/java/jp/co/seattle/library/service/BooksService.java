@@ -84,10 +84,11 @@ public class BooksService {
      * @param description
      * @param thumbnail
      */
-    public void updateBook(BookInfo bookInfo) {
+    public void updateBookInfo(BookInfo bookInfo) {
 
         String sql = "UPDATE books SET title ='" + bookInfo.getTitle() + "',author ='" + bookInfo.getAuthor()
                 + "',publisher ='" + bookInfo.getPublisher()
+                + "',publish_date ='" + bookInfo.getPublishDate()
                 + "',description='" + bookInfo.getDescription() + "',thumbnail='" + bookInfo.getThumbnail()
                 + "',update_date='" +timestamp
                 + "' WHERE id =" + bookInfo.getBookId();
