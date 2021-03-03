@@ -1,2 +1,5 @@
-src/main/webapp/resources/thumbnails/*
-src/main/webapp/WEB-INF/
+src/main/webapp/resources/thumbnails/*  
+!.gitkeep
+
+src/main/webapp/WEB-INF/classes/* 
+!.gitkeep
