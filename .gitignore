@@ -1,5 +1,0 @@
-src/main/webapp/resources/thumbnails/*  
-!.gitkeep
-
-src/main/webapp/WEB-INF/classes/* 
-!.gitkeep
