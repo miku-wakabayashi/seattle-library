@@ -106,9 +106,9 @@ public class EditBookController {
         }
 
         if (!file.isEmpty()) {
-//            thumbnail = file.getOriginalFilename();
-//            String path = new File(".").getAbsoluteFile().getParent();
-//            logger.info(path);
+            //            thumbnail = file.getOriginalFilename();
+            //            String path = new File(".").getAbsoluteFile().getParent();
+            //            logger.info(path);
             try {
                 // サムネイル画像をアップロード
                 thumbnailService.uploadThumbnail(thumbnail, file);
@@ -122,7 +122,7 @@ public class EditBookController {
             }
         }
 
-        booksService.updateBook(bookInfo);
+        booksService.updateBookInfo(bookInfo);
 
         model.addAttribute("resultMessage", "登録完了");
         model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
