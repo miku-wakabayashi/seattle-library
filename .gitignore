@@ -1,0 +1,11 @@
+# https://github.com/github/gitignore/blob/master/Java.gitignore
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+
+# thumbnail配下のファイル全て
+thumbnails/*  
+!.gitkeep
