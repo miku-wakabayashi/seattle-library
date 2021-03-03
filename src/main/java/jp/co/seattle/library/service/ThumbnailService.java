@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller //APIの入り口
 public class ThumbnailService {
     final static Logger logger = LoggerFactory.getLogger(ThumbnailService.class);
+    private static final String UPLOAD_DIR = "../workspace/SeattleLibrary/src/main/webapp/resources/thumbnails/";
 
     /**
      * サムネイル画像をアップロードする
@@ -23,20 +24,15 @@ public class ThumbnailService {
      * @throws IOException
      */
     public void uploadThumbnail(String thumbnail, MultipartFile file) throws IOException {
+        thumbnail = file.getOriginalFilename();
+        String path = new File(".").getAbsoluteFile().getParent();
 
         // アップロードファイルを置く
-
-        // 保存先を定義
-        String uploadPath = "../workspace/SeattleLibrary/src/main/webapp/resources/thumbnails/";
-
+        File uploadFile = new File("./src/main/webapp/resources/thumbnails/" + thumbnail);
         byte[] bytes = file.getBytes();
-
-        // 指定ファイルへ読み込みファイルを書き込み
-        BufferedOutputStream stream = new BufferedOutputStream(
-                new FileOutputStream(new File(uploadPath + thumbnail)));
-        stream.write(bytes);
-        stream.close();
-
+        BufferedOutputStream uploadFileStream = new BufferedOutputStream(new FileOutputStream(uploadFile));
+        uploadFileStream.write(bytes);
+        uploadFileStream.close();
     }
 
 }

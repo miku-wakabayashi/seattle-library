@@ -13,7 +13,10 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <!-- addBook.cssに配置しなおす -->
     <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
-    <script src="resources/js/thumbnail.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--     <script src="resources/js/thumbnail.js"></script>-->
+    <script type="text/javascript" src="resources/js/thumbnail.js" /></script>
 </head>
 <body class="wrapper">
     <header>
@@ -35,8 +38,10 @@
                  <div>
                      <span>書籍の画像</span>
                      <span class="care care1">任意</span>
-                     <div class="book_thumnail">
-                         <img class="book_noimg" src="resources/img/noImg.png">
+<!--                      <div class="book_thumnail"> -->
+                     <div class="preview">
+                        <!--  <img class="book_noimg" src="resources/img/noImg.png"> -->
+                         <img src="resources/img/noImg.png">
                      </div>
                      <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
                  </div>
