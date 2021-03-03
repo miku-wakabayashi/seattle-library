@@ -1,8 +1,8 @@
 
 # https://github.com/github/gitignore/blob/master/Java.gitignore
 # Compiled class file
-*.class
-# /target/classes/jp/co/seattle/library/**/*
+# *.class
+target/classes/jp/co/seattle/library/**/*
 
 # Log file
 *.log
