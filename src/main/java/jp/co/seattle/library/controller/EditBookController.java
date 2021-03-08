@@ -1,6 +1,9 @@
 package jp.co.seattle.library.controller;
 
-import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,9 @@ import jp.co.seattle.library.service.ThumbnailService;
 public class EditBookController {
     final static Logger logger = LoggerFactory.getLogger(EditBookController.class);
     private static final String UPLAD_ERROR = "サムネイル画像のアップロードに失敗しました";
+    private static final String AUTHOR_ERROR = "著者名は30文字以内で入力してください";
+    private static final String PUBLISHDATE_ERROR = "出版日はYYYYMMDD形式で入力してください";
+    private static final int VALIDATEIN_AUTHOR = 31;
 
     @Autowired
     private BooksService booksService;
@@ -72,25 +78,53 @@ public class EditBookController {
         bookInfo.setThumbnail(thumbnail);
         bookInfo.setPublishDate(publishDateStr);
 
+        boolean isValid = true;
+
+        // 著者名文字数チェック
+        if (author.length() > VALIDATEIN_AUTHOR) {
+            // エラーを設定
+            model.addAttribute("authorError", AUTHOR_ERROR);
+            isValid = false;
+        }
+
+        // 出版日チェック
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
+
+        try {
+            // Date型変換
+            Date publishDate = sdf.parse(publishDateStr);
+        } catch (ParseException e) {
+            // Date型に変換できなかった場合エラーを設定する
+            model.addAttribute("pubulishDateError", PUBLISHDATE_ERROR);
+            isValid = false;
+        }
+
+        // バリデーションチェックNGだった場合、書籍追加画面に遷移
+        if (!isValid) {
+            model.addAttribute(bookInfo);
+            return "addBook";
+        }
+
         if (!file.isEmpty()) {
-            thumbnail = file.getOriginalFilename();
-            String path = new File(".").getAbsoluteFile().getParent();
-            logger.info(path);
+            //            thumbnail = file.getOriginalFilename();
+            //            String path = new File(".").getAbsoluteFile().getParent();
+            //            logger.info(path);
             try {
                 // サムネイル画像をアップロード
                 thumbnailService.uploadThumbnail(thumbnail, file);
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
                 model.addAttribute("thumbnailUploadError", UPLAD_ERROR);
                 model.addAttribute(bookInfo);
+                return "addBook";
             }
         }
 
-        booksService.updateBook(bookInfo);
+        booksService.updateBookInfo(bookInfo);
 
-        model.addAttribute("resultMess,age", "登録完了");
+        model.addAttribute("resultMessage", "登録完了");
         model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
 
         return "details";

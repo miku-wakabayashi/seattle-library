@@ -1,2 +1,8 @@
-src/main/webapp/resources/thumbnails/*
-src/main/webapp/WEB-INF/
+
+# https://github.com/github/gitignore/blob/master/Java.gitignore
+# Compiled class file
+# *.class
+target/classes/jp/co/seattle/library/**/*
+
+# Log file
+*.log
