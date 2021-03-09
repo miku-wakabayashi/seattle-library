@@ -13,6 +13,7 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <!-- addBook.cssに配置しなおす -->
     <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="resources/js/thumbnail.js"></script>
 </head>
 <body class="wrapper">
@@ -33,7 +34,6 @@
 		<form action="<%=request.getContextPath()%>/insertBook" method="post" enctype="multipart/form-data" id="data_upload_form">
 			<div class="content_body add_book_content">
 					<div>
-
 						<span>書籍の画像</span>
 						<span class="care care1">任意</span>
 						<div class="book_thumnail">
