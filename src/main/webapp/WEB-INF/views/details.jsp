@@ -65,12 +65,22 @@
                          <p>${bookInfo.publishDate}</p>
                      </div>
                      <div>
+                         <span>ISBN</span>
+                         <p>${bookInfo.isbn}</p>
+                     </div>
+                     <div>
                          <span>説明文</span>
                          <p>${bookInfo.description}</p>
                      </div>
                  </div>
             </div>
             <div class="edtDelBookBtn_box">
+                <form method="post" action="rentBook">
+                    <button type="submit" value="${bookInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                </form>
+                <form method="post" action="returnBook">
+                    <button type="submit" value="${bookInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
+                </form>
                 <form method="post" action="editBook">
                     <button type="submit" value="${bookInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
                 </form>

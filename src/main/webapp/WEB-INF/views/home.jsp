@@ -33,10 +33,6 @@
                 <div class="error_msg">${resultMessage}</div>
             </c:if>
             <div>
-            <!-- JSTLのCoreタグライブラリで繰り返し処理。items属性に集合の値、var属性に集合の要素を指定。先頭のcはPrefix属性で、taglibで任意の値を指定できる。-->
-                <c:if test="${!empty resultMessage}">
-                    <div class="error_msg">${resultMessage}</div>
-                </c:if>
                 <div class="booklist">
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">

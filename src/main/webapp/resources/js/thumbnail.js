@@ -29,6 +29,3 @@ $(function(){
     reader.readAsDataURL(file);
   });
 });
-
-
-

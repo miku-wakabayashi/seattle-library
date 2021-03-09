@@ -141,7 +141,7 @@ input {
     font-size: 12px;
 }
 
-a.btn_addBook, button.btn_addBook,button.btn_editBook, button.btn_deleteBook {
+a.btn_addBook, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook {
     display: inline-block;
     font-size: 16px;
     font-weight: bold;
@@ -160,6 +160,12 @@ button.btn_editBook{
 }
 button.btn_deleteBook {
     background-color: #e94047;
+}
+button.btn_rentBook{
+    background-color: #FF9933;
+}
+button.btn_returnBook {
+    background-color: #7db4e6;
 }
 
 a:hover, button:hover {
@@ -204,16 +210,16 @@ a:hover, button:hover {
     justify-content: center;
 }
 
-button.btn_addBook, button.btn_editBook, button.btn_deleteBook {
+button.btn_addBook, button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook {
     border-radius: 30px;
     width: 120px;
     margin-top: 20px;
     border: none;
     border-bottom: solid 2px rgba(0, 0, 0, .2);
 }
-button.btn_addBook:focus, button.btn_editBook:focus, button.btn_deleteBook:focus {
+button.btn_addBook:focus, button.btn_editBook:focus, button.btn_deleteBook:focus,button.btn_rentBook:focus,button.btn_returnBook:focus {
     outline: none;
 }
-button.btn_addBook:hover, button.btn_editBook:hover, button.btn_deleteBook:hover {
+button.btn_addBook:hover, button.btn_editBook:hover, button.btn_deleteBook:hover,button.btn_rentBook:hover,button.btn_returnBook:hover {
     cursor: pointer;
 }

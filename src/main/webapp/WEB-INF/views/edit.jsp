@@ -44,6 +44,17 @@
                  </div>
                  <div class="content_right">
                      <div>
+						 <c:if test="${!empty errorList}">
+						 	<div class="error">
+						 		<c:forEach var="errorInfo" items="${errorList}">
+ 						 			<ul>
+						 				<li>
+						 					<c:out value="${errorInfo.errorMessage}"/>
+						 				</li>
+						 			</ul>
+						 		</c:forEach>
+						 	</div>
+						 </c:if>
                          <span>書籍名</span><span class="care care2">必須</span>
                          <c:if test="${!empty bookInfo}">
                              <input type="text" name="title" value="${bookInfo.title}" required>
@@ -80,6 +91,15 @@
                          </c:if>
                      </div>
                      <div>
+                         <span>ISBN</span><span class="care care1">任意</span>
+                         <c:if test="${!empty bookInfo}">
+                             <input type="text" name="isbn" value="${bookInfo.isbn}">
+                         </c:if>
+                         <c:if test="${empty bookInfo}">
+                             <input type="text" name="isbn">
+                         </c:if>
+                     </div>
+                     <div>
                          <span>説明文</span><span class="care care1">任意</span>
                          <c:if test="${!empty bookInfo}">
                              <input type="text" name="description" value="${bookInfo.description}">
@@ -88,14 +108,16 @@
                              <input type="text" name="description">
                          </c:if>
                      </div>
-                 </div>
+				</div>
+           	 </div>
+           		 <div class="addBookBtn_box">
+					<button type="submit" class="btn_addBook">更新</button>
+				</div>
+				<input type="hidden" name="bookId" value="${bookInfo.bookId}">
+<%--             <div class="edtDelBookBtn_box">
+                <button type="submit" class="btn_addBook">更新</button>
             </div>
-            <div class="edtDelBookBtn_box">
-                <button type="submit" class="btn_addBook">登録</button>
-            </div>
-            <input type="hidden" name="bookId" value="${bookInfo.bookId}">
-                <%-- <input type="hidden" name="bookId" value="${bookInfo.bookId}">
-                <input type="submit" value="編集完了"> --%>
+            <input type="hidden" name="bookId" value="${bookInfo.bookId}"> --%>
         </form>
     </main>
 
