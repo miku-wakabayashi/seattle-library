@@ -37,11 +37,12 @@ public class LendingController {
     @RequestMapping(value = "/rentBook", method = RequestMethod.POST)
     public String rentBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
+            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model) {
 
         lendingService.regLendingData(bookId);
 
-        model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
         return "details";
     }
 
@@ -55,11 +56,12 @@ public class LendingController {
     @RequestMapping(value = "/returnBook", method = RequestMethod.POST)
     public String returnBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
+            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model) {
 
         lendingService.deleteLendingData(bookId);
 
-        model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
         return "details";
     }
 

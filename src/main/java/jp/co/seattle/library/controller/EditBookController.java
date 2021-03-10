@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.seattle.library.common.util.BookUtil;
-import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.ErrorInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ThumbnailService;
@@ -46,7 +46,7 @@ public class EditBookController {
             Model model) {
         logger.info("Welcome edit.java! The client locale is {}.", locale);
 
-        model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         return "edit";
     }
@@ -62,12 +62,13 @@ public class EditBookController {
             @RequestParam("publishDate") String publishDateStr,
             @RequestParam("bookId") Integer bookId,
             @RequestParam("isbn") String isbn,
+            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model, HttpServletRequest request) {
         logger.info("Welcome updateBooks.java! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
         //フロントからDTOで渡すようにしてもいいが、一旦分かり易いようにここで格納している。
-        BookInfo bookInfo = new BookInfo();
+        BookDetailsInfo bookInfo = new BookDetailsInfo();
         bookInfo.setTitle(title);
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
@@ -106,7 +107,7 @@ public class EditBookController {
         booksService.updateBookInfo(bookInfo);
 
         model.addAttribute("resultMessage", "登録完了");
-        model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         return "details";
     }

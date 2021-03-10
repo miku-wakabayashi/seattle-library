@@ -33,7 +33,7 @@ public class DetailsController {
             Model model) {
         logger.info("Welcome details.java! The client locale is {}.", locale);
 
-        model.addAttribute("bookInfo", bookdService.getBookInfo(bookId));
+        model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 
         return "details";
     }

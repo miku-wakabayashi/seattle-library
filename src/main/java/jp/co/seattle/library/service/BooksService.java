@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 
+import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
 
 /**
@@ -35,26 +37,30 @@ public class BooksService {
     public List<BookInfo> getBookList() {
 
         // JSPに渡すデータを設定する
-        List<BookInfo> getedBookList = jdbcTemplate.query("select * from books",
+        List<BookInfo> getedBookList = jdbcTemplate.query(
+                "select * from books",
                 new BookInfoRowMapper());
 
         return getedBookList;
     }
 
     /**
-     * 書籍IDに紐づく書籍情報を取得する
+     * 書籍IDに紐づく書籍詳細情報を取得する
      *
      * @param bookId
      * @return 書籍情報
      */
-    public BookInfo getBookInfo(int bookId) {
+    public BookDetailsInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する
-        String sql = "SELECT * from books WHERE id =" + bookId;
-        logger.info(sql);
-        BookInfo bookInfo = jdbcTemplate.queryForObject(sql, new BookInfoRowMapper());
-        bookInfo.setPublishDate(bookInfo.getPublishDate());
-        return bookInfo;
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,(select count(1) from lending_manage where book_id ="
+                + bookId
+                + ")as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id ="
+                + bookId;
+
+        BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+        bookDetailsInfo.setPublishDate(bookDetailsInfo.getPublishDate());
+        return bookDetailsInfo;
     }
 
     /**
@@ -62,7 +68,7 @@ public class BooksService {
      *
      * @param bookInfo 書籍情報
      */
-    public void updateBookInfo(BookInfo bookInfo) {
+    public void updateBookInfo(BookDetailsInfo bookInfo) {
 
         String sql = "UPDATE books SET title ='" + bookInfo.getTitle() + "',author ='" + bookInfo.getAuthor()
                 + "',publisher ='" + bookInfo.getPublisher()
@@ -84,7 +90,7 @@ public class BooksService {
      * @param description
      * @param thumbnail
      */
-    public void registBook(BookInfo bookInfo) {
+    public void registBook(BookDetailsInfo bookInfo) {
 
         String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail,isbn,reg_date,upd_date) VALUES ('"
                 + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
@@ -98,16 +104,17 @@ public class BooksService {
     }
 
     /**
-     * BookIdが最大の書籍情報を取得する
+     * BookIdが最大の書籍詳細情報を取得する
      *
      * @return 書籍情報
      */
-    public BookInfo getNewerBookInfo() {
+    public BookDetailsInfo getNewerBookInfo() {
 
         // JSPに渡すデータを設定する
-        String sql = "SELECT * FROM books WHERE id = (SELECT MAX(id) FROM books)";
-        BookInfo Booklist = jdbcTemplate.queryForObject(sql, new BookInfoRowMapper());
-        return Booklist;
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,lm.book_id as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
+        String sql1 = "SELECT id,title,author, FROM books WHERE id = (SELECT MAX(id) FROM books)";
+        BookDetailsInfo BookDetaillist = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+        return BookDetaillist;
     }
 
     /**

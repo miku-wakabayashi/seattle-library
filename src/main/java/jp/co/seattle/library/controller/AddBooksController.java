@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.seattle.library.common.util.BookUtil;
-import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.ErrorInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ThumbnailService;
@@ -62,7 +62,7 @@ public class AddBooksController {
 
         // パラメータで受け取った書籍情報をDtoに格納する。
         // フロントからDTOで渡すようにしてもいいが、一旦分かり易いようにここで格納している。
-        BookInfo bookInfo = new BookInfo();
+        BookDetailsInfo bookInfo = new BookDetailsInfo();
         bookInfo.setTitle(title);
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
@@ -104,7 +104,7 @@ public class AddBooksController {
 
         model.addAttribute("resultMessage", "登録完了");
         // 書籍IDが最大の書籍情報を取得する
-        model.addAttribute("bookInfo", booksService.getNewerBookInfo());
+        model.addAttribute("bookDetailsInfo", booksService.getNewerBookInfo());
         return "details";
     }
 

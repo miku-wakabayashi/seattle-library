@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.ErrorInfo;
 
 /**
@@ -26,7 +26,7 @@ public class BookUtil {
     private static final String ISBN_ERROR = "ISBNの桁数または半角数字が正しくありません";
     private static final String PUBLISHDATE_ERROR = "出版日は半角数字のYYYYMMDD形式で入力してください";
 
-    public List<ErrorInfo> validBookInfo(BookInfo bookinfo) {
+    public List<ErrorInfo> validBookInfo(BookDetailsInfo bookinfo) {
         List<ErrorInfo> errorList = new ArrayList<ErrorInfo>();
 
         // ISBNバリデーションチェック
