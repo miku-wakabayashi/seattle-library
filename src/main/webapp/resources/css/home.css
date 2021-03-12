@@ -107,15 +107,14 @@ input {
     width: 200px;
     height: 250px;
 }
-.book_thumnail img.book_noimg, img.book_img{
+img.book_noimg, img.book_img{
     height:200px;
     width: 200px;
-    position: absolute;
     bottom: 10px;
 }
  img.book_img{
     height:200px;
-    width: 160px;
+    width: 200px;
     left: 20px;
 }
 .book_thumnail a {
@@ -222,4 +221,10 @@ button.btn_addBook:focus, button.btn_editBook:focus, button.btn_deleteBook:focus
 }
 button.btn_addBook:hover, button.btn_editBook:hover, button.btn_deleteBook:hover,button.btn_rentBook:hover,button.btn_returnBook:hover {
     cursor: pointer;
+}
+
+hr.border_add {
+	width:850px;
+	margin: revert;
+
 }
