@@ -62,7 +62,6 @@ public class EditBookController {
             @RequestParam("publishDate") String publishDateStr,
             @RequestParam("bookId") Integer bookId,
             @RequestParam("isbn") String isbn,
-            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model, HttpServletRequest request) {
         logger.info("Welcome updateBooks.java! The client locale is {}.", locale);
 

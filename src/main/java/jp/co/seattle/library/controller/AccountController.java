@@ -53,7 +53,6 @@ public class AccountController {
         logger.info("Welcome createAccount! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
-        // フロントからDTOで渡すようにしてもいいが、一旦分かり易いようにここで格納している。
         UserInfo userInfo = new UserInfo();
         userInfo.setEmail(email);
 

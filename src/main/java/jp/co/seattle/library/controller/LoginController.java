@@ -1,7 +1,5 @@
 package jp.co.seattle.library.controller;
 
-import java.io.File;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.seattle.library.dto.UserInfo;
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.UsersService;
 
 /**
  * Handles requests for the application home page.
@@ -22,6 +22,8 @@ public class LoginController {
 
     @Autowired
     private BooksService booksService;
+    @Autowired
+    private UsersService usersService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
     public String first(Model model) {
@@ -41,13 +43,13 @@ public class LoginController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             Model model) {
-        // 本来はPWとメールアドレスの認証などの処理をここに記載する
-        // 今回は空実装にしてある
 
-        logger.info("Welcome to home");
+        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        String path1 = new File(".").getAbsoluteFile().getParent();
-        logger.info(path1);
+        if (!selectedUserInfo.getPassword().equals(password)) {
+            model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
+            return "login";
+        }
 
         // 本の情報を取得して画面側に渡す
         model.addAttribute("bookList", booksService.getBookList());

@@ -82,13 +82,15 @@
                 <form method="post" action="rentBook">
                     <button type="submit" class="btn_rentBook" disabled="disabled">借りる</button>
                     <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
-                    <input type="hidden" id="lendingStatus" name="lendingStatus" value="${bookDetailsInfo.lendingStatus}">
                 </form>
+				<input type="hidden" id="lendingStatus" name="lendingStatus" value="${bookDetailsInfo.lendingStatus}">
+
                 <form method="post" action="returnBook">
                     <button type="submit" class="btn_returnBook" disabled="disabled">返す</button>
                     <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
-                    <input type="hidden" name="lendingStatus" value="${bookDetailsInfo.lendingStatus}">
                 </form>
+				<input type="hidden" id="lendingStatus" name="lendingStatus" value="${bookDetailsInfo.lendingStatus}">
+
                 <form method="post" action="editBook">
                     <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
                 </form>

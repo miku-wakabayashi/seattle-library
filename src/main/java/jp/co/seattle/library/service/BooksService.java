@@ -14,6 +14,7 @@ import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
+import software.amazon.awssdk.utils.StringUtils;
 
 /**
  * Handles requests for the application home page.
@@ -27,6 +28,8 @@ public class BooksService {
     private JdbcTemplate jdbcTemplate;
 
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+    private static final String LENDING_STATUS_ON = "貸出し可";
 
     /**
      * 書籍リストを取得する
@@ -53,13 +56,15 @@ public class BooksService {
     public BookDetailsInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する
-        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,(select count(1) from lending_manage where book_id ="
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,(select lending_status from lending_manage where book_id ="
                 + bookId
                 + ")as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id ="
                 + bookId;
 
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-        bookDetailsInfo.setPublishDate(bookDetailsInfo.getPublishDate());
+        if (StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
+            bookDetailsInfo.setLendingStatus(LENDING_STATUS_ON);
+        }
         return bookDetailsInfo;
     }
 
@@ -100,6 +105,8 @@ public class BooksService {
                 + bookInfo.getIsbn() + "',"
                 + "sysdate(),"
                 + "sysdate())";
+
+        logger.info(sql);
         jdbcTemplate.update(sql);
     }
 
@@ -112,7 +119,6 @@ public class BooksService {
 
         // JSPに渡すデータを設定する
         String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,lm.book_id as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
-        String sql1 = "SELECT id,title,author, FROM books WHERE id = (SELECT MAX(id) FROM books)";
         BookDetailsInfo BookDetaillist = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
         return BookDetaillist;
     }

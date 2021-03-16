@@ -27,6 +27,7 @@
     <main>
         <h1>Home</h1>
         <a href="<%= request.getContextPath()%>/addBook" class="btn_addBook">書籍の追加</a>
+		<a href="<%= request.getContextPath()%>/bulkRegistration" class="btn_editBook">一括登録</a>
 
         <div class="content_body">
             <c:if test="${!empty resultMessage}">

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.ErrorInfo;
@@ -25,13 +26,22 @@ public class BookUtil {
     final static Logger logger = LoggerFactory.getLogger(BookUtil.class);
     private static final String ISBN_ERROR = "ISBNの桁数または半角数字が正しくありません";
     private static final String PUBLISHDATE_ERROR = "出版日は半角数字のYYYYMMDD形式で入力してください";
+    private static final String REQUIRED_ERROR = "未入力の必須項目があります";
 
-    public List<ErrorInfo> validBookInfo(BookDetailsInfo bookinfo) {
+    public List<ErrorInfo> validBookInfo(BookDetailsInfo bookInfo) {
         List<ErrorInfo> errorList = new ArrayList<ErrorInfo>();
 
+        // 必須項目チェック
+        if (!isRequiredExist(bookInfo)) {
+            ErrorInfo error = new ErrorInfo();
+            error.setErrorMessage(REQUIRED_ERROR);
+            errorList.add(error);
+            return errorList;
+        }
+
         // ISBNバリデーションチェック
-        if (!bookinfo.getIsbn().isEmpty()) {
-            if (!isValidISBN(bookinfo.getIsbn())) {
+        if (!bookInfo.getIsbn().isEmpty()) {
+            if (!isValidISBN(bookInfo.getIsbn())) {
                 // エラーを設定
                 ErrorInfo error = new ErrorInfo();
                 error.setErrorMessage(ISBN_ERROR);
@@ -40,7 +50,7 @@ public class BookUtil {
         }
 
         // 出版日チェック
-        if (!isDateFormat(bookinfo.getPublishDate())) {
+        if (!isDateFormat(bookInfo.getPublishDate())) {
             // Date型に変換できなかった場合エラーを設定する
             ErrorInfo error = new ErrorInfo();
             error.setErrorMessage(PUBLISHDATE_ERROR);
@@ -93,5 +103,20 @@ public class BookUtil {
 
         return true;
 
+    }
+
+    /**
+     * 必須項目存在チェック
+     * @param bookInfo 書籍情報
+     * @return true：必須項目全て値あり
+     *         false：必須項目未入力あり
+     */
+    public boolean isRequiredExist(BookDetailsInfo bookInfo) {
+        if (StringUtils.isEmpty(bookInfo.getTitle()) || StringUtils.isEmpty(bookInfo.getAuthor())
+                || StringUtils.isEmpty(bookInfo.getPublisher())
+                || StringUtils.isEmpty(bookInfo.getPublishDate())) {
+            return false;
+        }
+        return true;
     }
 }

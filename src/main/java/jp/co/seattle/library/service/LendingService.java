@@ -17,15 +17,19 @@ public class LendingService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private static final String LENDING_STATUS_OFF = "貸出し中";
+
     /**
      * 書籍を借りる
      * @param bookId 書籍ID
      */
     public void regLendingData(Integer bookId) {
 
-        String sql = "INSERT INTO lending_manage (book_id,rent_date,reg_date,upd_date) VALUES ("
+        String sql = "INSERT INTO lending_manage (book_id,lending_status,rent_date,reg_date,upd_date) VALUES ("
                 + bookId
-                + ",sysdate(),sysdate(),sysdate())";
+                + ",'"
+                + LENDING_STATUS_OFF
+                + "',sysdate(),sysdate(),sysdate())";
         jdbcTemplate.update(sql);
     }
 

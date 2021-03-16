@@ -24,14 +24,14 @@ public class BookDetailsInfo {
 
     private String thumbnail;
 
-    private int lendingStatus;
+    private String lendingStatus;
 
     public BookDetailsInfo() {
 
     }
 
     public BookDetailsInfo(int bookId, String title, String author, String publisher, String description, String isbn,
-            String publishDate, String thumbnail, int lendingStatus) {
+            String publishDate, String thumbnail, String lendingStatus) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;

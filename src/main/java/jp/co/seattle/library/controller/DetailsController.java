@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.service.BooksService;
 
 /**
@@ -32,7 +34,11 @@ public class DetailsController {
             @RequestParam("bookId") Integer bookId,
             Model model) {
         logger.info("Welcome details.java! The client locale is {}.", locale);
+        BookDetailsInfo bookDetails = bookdService.getBookInfo(bookId);
 
+        if (!StringUtils.isEmpty(bookDetails.getLendingStatus())) {
+            bookDetails.setLendingStatus("貸し出し中");
+        }
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 
         return "details";

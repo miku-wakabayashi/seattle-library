@@ -31,13 +31,12 @@ public class LendingController {
      * 書籍を借りる
      *
      * @param bookId  書籍ID
-     * @return　詳細画面に遷移
+     * @return 詳細画面に遷移
      */
     @Transactional
     @RequestMapping(value = "/rentBook", method = RequestMethod.POST)
     public String rentBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
-            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model) {
 
         lendingService.regLendingData(bookId);
@@ -56,7 +55,6 @@ public class LendingController {
     @RequestMapping(value = "/returnBook", method = RequestMethod.POST)
     public String returnBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
-            @RequestParam("lendingStatus") Integer lendingStatus,
             Model model) {
 
         lendingService.deleteLendingData(bookId);
