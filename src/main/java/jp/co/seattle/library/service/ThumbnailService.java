@@ -1,14 +1,23 @@
 package jp.co.seattle.library.service;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.http.Method;
+import jp.co.seattle.library.config.MinioConfig;
 
 /**
  * Handles requests for the application home page.
@@ -17,26 +26,72 @@ import org.springframework.web.multipart.MultipartFile;
 public class ThumbnailService {
     final static Logger logger = LoggerFactory.getLogger(ThumbnailService.class);
 
+    private static final String S3_OBJECT_THUMBNAILS = "thumbnails/";
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+    @Autowired
+    private MinioClient minioClient;
+    @Autowired
+    private MinioConfig minioConfig;
+
     /**
      * サムネイル画像をアップロードする
      * @param thumbnail
-     * @throws IOException
+     * @return アップロードファイル名
+     * @throws Exception
      */
-    public void uploadThumbnail(String thumbnail, MultipartFile file) throws IOException {
+    public String uploadThumbnail(String thumbnailName, MultipartFile file)
+            throws Exception {
 
-        // アップロードファイルを置く
+        String extension = thumbnailName.substring(thumbnailName.lastIndexOf("."));
 
-        // 保存先を定義
-        String uploadPath = "../workspace/SeattleLibrary/src/main/webapp/resources/thumbnails/";
+        //ファイル名をタイムスタンプにする
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String timestampStr = (sdf.format(timestamp));
+        String fileName = timestampStr + extension;
 
-        byte[] bytes = file.getBytes();
+        // S3にサムネイル画像をアップロード
+        InputStream inputStream = file.getInputStream();
+        ObjectWriteResponse owr = minioClient.putObject(
+                PutObjectArgs.builder().bucket(minioConfig.getMinioInfo("s3.bucket-name"))
+                        .object(S3_OBJECT_THUMBNAILS + fileName)
+                        .stream(
+                                inputStream, -1, 10485760)
+                        .build());
 
-        // 指定ファイルへ読み込みファイルを書き込み
-        BufferedOutputStream stream = new BufferedOutputStream(
-                new FileOutputStream(new File(uploadPath + thumbnail)));
-        stream.write(bytes);
-        stream.close();
+        return fileName;
 
+    }
+
+    /**
+     * URL取得
+     * @param fileName
+     * @return ファイルのURL
+     * @throws Exception
+     */
+    public String getURL(String fileName) throws Exception {
+        String url = minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .method(Method.GET)
+                        .bucket(minioConfig.getMinioInfo("s3.bucket-name"))
+                        .object(S3_OBJECT_THUMBNAILS + fileName)
+                        .build());
+
+        return url;
+
+    }
+
+    public void deleteTumbnail(String fileName) {
+        if (!StringUtils.isEmpty(fileName)) {
+            try {
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder().bucket(minioConfig.getMinioInfo("s3.bucket-name"))
+                                .object(S3_OBJECT_THUMBNAILS + fileName).build());
+
+            } catch (Exception e) {
+                logger.error(fileName + "：　サムネイル画像削除でエラーが発生しました。");
+            }
+        }
     }
 
 }

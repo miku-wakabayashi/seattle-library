@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.ThumbnailService;
 
 /**
  * Handles requests for the application home page.
@@ -23,6 +24,8 @@ public class DeleteBookController {
 
     @Autowired
     private BooksService booksService;
+    @Autowired
+    private ThumbnailService thumbnailService;
 
     /**
      * 削除処理サンプルメソッド
@@ -39,7 +42,12 @@ public class DeleteBookController {
             Model model) {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
+        // 削除前にサムネイルファイル名を取得しておく
+        String beforeThumbnaileName = booksService.getThumbnailName(bookId);
+        // データ削除
         booksService.deleteBook(bookId);
+        // サムネイルファイル削除
+        thumbnailService.deleteTumbnail(beforeThumbnaileName);
         model.addAttribute("resultMessage", "削除完了");
 
         model.addAttribute("bookList", booksService.getBookList());

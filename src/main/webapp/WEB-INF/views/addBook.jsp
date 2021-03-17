@@ -39,7 +39,7 @@
 						<div class="book_thumnail">
 							<img class="book_noimg" src="resources/img/noImg.png">
 						</div>
-						<input type="file" accept="image/*" name="thumbnail">
+						<input type="file" accept="image/*" name="thumbnail" id="thumbnail">
 					</div>
 				<div class="content_right">
 					<div>

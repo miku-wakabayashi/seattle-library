@@ -74,7 +74,8 @@ public class BulkRegistController {
 
                 BookDetailsInfo bookInfo = mapData(data);
                 // 登録時にnullの場合空文字を登録するようにする。
-                bookInfo.setThumbnail("");
+                bookInfo.setThumbnailName("");
+                bookInfo.setThumbnailUrl("");
 
                 // バリデーションチェックNGだった場合エラーリストにエラー文言追加
                 if (!CollectionUtils.isEmpty(bookUtil.validBookInfo(bookInfo))) {

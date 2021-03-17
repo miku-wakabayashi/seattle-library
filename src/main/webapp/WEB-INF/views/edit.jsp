@@ -33,11 +33,11 @@
                      <span>書籍の画像</span>
                      <span class="care care1">任意</span>
                      <div class="book_thumnail">
-                         <c:if test="${empty bookDetailsInfo.thumbnail}">
+                         <c:if test="${empty bookDetailsInfo.thumbnailUrl}">
                              <img class="book_noimg" src="resources/img/noImg.png">
                          </c:if>
-                         <c:if test="${!empty bookDetailsInfo.thumbnail}">
-                             <img class="book_img" src="resources/thumbnails/${bookDetailsInfo.thumbnail}">
+                         <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
+                             <img class="book_noimg" src="${bookDetailsInfo.thumbnailUrl}">
                          </c:if>
                      </div>
                      <input type="file" accept="image/*" name="thumbnail" id="thumbnail">

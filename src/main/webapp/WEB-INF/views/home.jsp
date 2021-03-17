@@ -26,8 +26,8 @@
     </header>
     <main>
         <h1>Home</h1>
-        <a href="<%= request.getContextPath()%>/addBook" class="btn_addBook">書籍の追加</a>
-		<a href="<%= request.getContextPath()%>/bulkRegistration" class="btn_editBook">一括登録</a>
+        <a href="<%= request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
+		<a href="<%= request.getContextPath()%>/bulkRegistration" class="btn_bulk_book">一括登録</a>
 
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
@@ -43,7 +43,7 @@
                                         <img class="book_noimg" src="resources/img/noImg.png">
                                     </c:if>
                                     <c:if test="${!empty bookInfo.thumbnail}">
-                                        <img class="book_img" src="resources/thumbnails/${bookInfo.thumbnail}">
+                                        <img class="book_noimg" src="${bookInfo.thumbnail}">
                                     </c:if>
                                 </a>
                             <input type="hidden" name="bookId" value="${bookInfo.bookId}">

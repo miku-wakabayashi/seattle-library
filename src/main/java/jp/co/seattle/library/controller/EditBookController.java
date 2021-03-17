@@ -1,6 +1,5 @@
 package jp.co.seattle.library.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,35 +74,41 @@ public class EditBookController {
         bookInfo.setDescription(description);
         bookInfo.setBookId(bookId);
         bookInfo.setIsbn(isbn);
+        bookInfo.setPublishDate(publishDateStr);
 
         // バリデーションチェックNGだった場合、書籍追加画面に遷移
         List<ErrorInfo> errorList = bookUtil.validBookInfo(bookInfo);
         if (!CollectionUtils.isEmpty(errorList)) {
-            model.addAttribute(bookInfo);
+            model.addAttribute("bookInfo", bookInfo);
             model.addAttribute("errorList", errorList);
-            return "editBook";
+            return "edit";
         }
 
-        // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
-        bookInfo.setThumbnail(thumbnail);
-        bookInfo.setPublishDate(publishDateStr);
+        String url = "";
 
         if (!file.isEmpty()) {
             try {
                 // サムネイル画像をアップロード
-                thumbnailService.uploadThumbnail(thumbnail, file);
+                url = thumbnailService.uploadThumbnail(thumbnail, file);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
                 model.addAttribute("thumbnailUploadError", UPLAD_ERROR);
-                model.addAttribute(bookInfo);
+                model.addAttribute("bookDetailsInfo", bookInfo);
                 return "addBook";
             }
         }
+        bookInfo.setThumbnailUrl(url);
+
+        // 更新前のサムネイルファイル名を取得しておく
+        String beforeThumbnaileName = booksService.getThumbnailName(bookInfo.getBookId());
 
         booksService.updateBookInfo(bookInfo);
+
+        // 更新前のサムネイルファイル削除
+        thumbnailService.deleteTumbnail(beforeThumbnaileName);
 
         model.addAttribute("resultMessage", "登録完了");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));

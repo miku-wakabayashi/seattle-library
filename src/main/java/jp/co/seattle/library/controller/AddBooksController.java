@@ -1,6 +1,5 @@
 package jp.co.seattle.library.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,33 +64,37 @@ public class AddBooksController {
         bookInfo.setPublisher(publisher);
         bookInfo.setDescription(description);
         bookInfo.setIsbn(isbn);
-
-        // クライアントのファイルシステムにある元のファイル名を設定する
-        String thumbnail = file.getOriginalFilename();
-        bookInfo.setThumbnail(thumbnail);
         bookInfo.setPublishDate(publishDateStr);
-        bookInfo.setIsbn(isbn);
 
         // バリデーションチェックNGだった場合、書籍追加画面に遷移
         List<ErrorInfo> errorList = bookUtil.validBookInfo(bookInfo);
         if (!CollectionUtils.isEmpty(errorList)) {
-            model.addAttribute(bookInfo);
+            model.addAttribute("bookInfo", bookInfo);
             model.addAttribute("errorList", errorList);
             return "addBook";
         }
 
+        // クライアントのファイルシステムにある元のファイル名を設定する
+        String thumbnail = file.getOriginalFilename();
+
         if (!file.isEmpty()) {
             try {
                 // サムネイル画像をアップロード
-                thumbnailService.uploadThumbnail(thumbnail, file);
-            } catch (IOException e) {
+                String fileName = thumbnailService.uploadThumbnail(thumbnail, file);
+                // URLを取得
+                String thumbnailUrl = thumbnailService.getURL(fileName);
+
+                bookInfo.setThumbnailName(fileName);
+                bookInfo.setThumbnailUrl(thumbnailUrl);
+
+            } catch (Exception e) {
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
                 ErrorInfo error = new ErrorInfo();
                 error.setErrorMessage(UPLAD_ERROR);
                 errorList.add(error);
                 model.addAttribute(errorList);
-                model.addAttribute(bookInfo);
+                model.addAttribute("bookDetailsInfo", bookInfo);
                 return "addBook";
             }
         }

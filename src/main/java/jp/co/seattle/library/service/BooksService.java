@@ -8,18 +8,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
-import software.amazon.awssdk.utils.StringUtils;
 
 /**
  * Handles requests for the application home page.
  */
-@Controller
+@Service
 //APIの入り口 APIとは、他のソフトウェアが外部から自分のソフトウェアへアクセスし利用できるようにしたもの
 //ソフトウェアコンポーネントが互いにやりとりするのに使用するインタフェースの仕様
 public class BooksService {
@@ -39,7 +39,6 @@ public class BooksService {
      */
     public List<BookInfo> getBookList() {
 
-        // JSPに渡すデータを設定する
         List<BookInfo> getedBookList = jdbcTemplate.query(
                 "select * from books",
                 new BookInfoRowMapper());
@@ -56,7 +55,7 @@ public class BooksService {
     public BookDetailsInfo getBookInfo(int bookId) {
 
         // JSPに渡すデータを設定する
-        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,(select lending_status from lending_manage where book_id ="
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail_url,b.thumbnail_name,b.isbn,(select lending_status from lending_manage where book_id ="
                 + bookId
                 + ")as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id ="
                 + bookId;
@@ -64,6 +63,9 @@ public class BooksService {
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
         if (StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
             bookDetailsInfo.setLendingStatus(LENDING_STATUS_ON);
+        }
+        if (!StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
+            bookDetailsInfo.setLendingStatus("貸出し中");
         }
         return bookDetailsInfo;
     }
@@ -79,7 +81,8 @@ public class BooksService {
                 + "',publisher ='" + bookInfo.getPublisher()
                 + "',publish_date ='" + bookInfo.getPublishDate()
                 + "',description='" + bookInfo.getDescription()
-                + "',thumbnail='" + bookInfo.getThumbnail()
+                + "',thumbnail_name='" + bookInfo.getThumbnailUrl()
+                + "',thumbnail_url='" + bookInfo.getThumbnailUrl()
                 + "',isbn='" + bookInfo.getIsbn()
                 + "',upd_date='" + timestamp
                 + "' WHERE id =" + bookInfo.getBookId();
@@ -97,11 +100,12 @@ public class BooksService {
      */
     public void registBook(BookDetailsInfo bookInfo) {
 
-        String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail,isbn,reg_date,upd_date) VALUES ('"
+        String sql = "INSERT INTO books (title, author,publisher,publish_date,description,thumbnail_name,thumbnail_url,isbn,reg_date,upd_date) VALUES ('"
                 + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
                 + bookInfo.getPublishDate() + ",'"
                 + bookInfo.getDescription() + "','"
-                + bookInfo.getThumbnail() + "','"
+                + bookInfo.getThumbnailName() + "','"
+                + bookInfo.getThumbnailUrl() + "','"
                 + bookInfo.getIsbn() + "',"
                 + "sysdate(),"
                 + "sysdate())";
@@ -117,8 +121,7 @@ public class BooksService {
      */
     public BookDetailsInfo getNewerBookInfo() {
 
-        // JSPに渡すデータを設定する
-        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail,b.isbn,lm.book_id as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail_name,b.thumbnail_url,b.isbn,lm.book_id as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
         BookDetailsInfo BookDetaillist = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
         return BookDetaillist;
     }
@@ -131,5 +134,15 @@ public class BooksService {
     public void deleteBook(Integer bookId) {
         String sql = "DELETE FROM books WHERE id =" + bookId;
         jdbcTemplate.execute(sql);
+    }
+
+    /**
+     * 書籍IDに紐づくサムネイルファイル名を取得
+     * @param bookId
+     * @return
+     */
+    public String getThumbnailName(int bookId) {
+        String sql = "SELECT thumbnail_name FROM books WHERE id = " + bookId;
+        return jdbcTemplate.queryForObject(sql, String.class);
     }
 }
