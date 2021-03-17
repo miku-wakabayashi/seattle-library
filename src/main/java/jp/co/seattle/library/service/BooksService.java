@@ -1,7 +1,6 @@
 package jp.co.seattle.library.service;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,8 +12,10 @@ import org.springframework.util.StringUtils;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.ThumbnailInfo;
 import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
+import jp.co.seattle.library.rowMapper.ThumbnailInfoRowMapper;
 
 /**
  * Handles requests for the application home page.
@@ -27,9 +28,7 @@ public class BooksService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-    private static final String LENDING_STATUS_ON = "貸出し可";
+    private static final String LENDING_STATUS_OFF = "貸出し可";
 
     /**
      * 書籍リストを取得する
@@ -62,11 +61,9 @@ public class BooksService {
 
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
         if (StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
-            bookDetailsInfo.setLendingStatus(LENDING_STATUS_ON);
+            bookDetailsInfo.setLendingStatus(LENDING_STATUS_OFF);
         }
-        if (!StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
-            bookDetailsInfo.setLendingStatus("貸出し中");
-        }
+
         return bookDetailsInfo;
     }
 
@@ -84,8 +81,8 @@ public class BooksService {
                 + "',thumbnail_name='" + bookInfo.getThumbnailUrl()
                 + "',thumbnail_url='" + bookInfo.getThumbnailUrl()
                 + "',isbn='" + bookInfo.getIsbn()
-                + "',upd_date='" + timestamp
-                + "' WHERE id =" + bookInfo.getBookId();
+                + "',upd_date=sysdate()"
+                + " WHERE id =" + bookInfo.getBookId();
         jdbcTemplate.update(sql);
     }
 
@@ -121,9 +118,13 @@ public class BooksService {
      */
     public BookDetailsInfo getNewerBookInfo() {
 
-        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail_name,b.thumbnail_url,b.isbn,lm.book_id as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
-        BookDetailsInfo BookDetaillist = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-        return BookDetaillist;
+        String sql = "SELECT b.id, b.title, b.author, b.description, b.publisher,b.publish_date,b.thumbnail_name,b.thumbnail_url,b.isbn,(select lending_status from lending_manage where book_id = b.id) as lending_status FROM books b LEFT OUTER JOIN lending_manage lm on b.id = lm.book_id WHERE b.id = (SELECT MAX(id) FROM books)";
+        BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+
+        if (StringUtils.isEmpty(bookDetailsInfo.getLendingStatus())) {
+            bookDetailsInfo.setLendingStatus(LENDING_STATUS_OFF);
+        }
+        return bookDetailsInfo;
     }
 
     /**
@@ -137,12 +138,14 @@ public class BooksService {
     }
 
     /**
-     * 書籍IDに紐づくサムネイルファイル名を取得
+     * 書籍IDに紐づくサムネイル情報を取得
      * @param bookId
      * @return
      */
-    public String getThumbnailName(int bookId) {
-        String sql = "SELECT thumbnail_name FROM books WHERE id = " + bookId;
-        return jdbcTemplate.queryForObject(sql, String.class);
+    public ThumbnailInfo getThumbnailInfo(int bookId) {
+
+        String sql = "SELECT thumbnail_name,thumbnail_url FROM books WHERE id = " + bookId;
+        ThumbnailInfo thumbnailInfo = jdbcTemplate.queryForObject(sql, new ThumbnailInfoRowMapper());
+        return thumbnailInfo;
     }
 }

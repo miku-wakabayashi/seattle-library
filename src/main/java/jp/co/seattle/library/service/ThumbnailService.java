@@ -27,8 +27,6 @@ public class ThumbnailService {
     final static Logger logger = LoggerFactory.getLogger(ThumbnailService.class);
 
     private static final String S3_OBJECT_THUMBNAILS = "thumbnails/";
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
     @Autowired
     private MinioClient minioClient;
     @Autowired
@@ -43,6 +41,7 @@ public class ThumbnailService {
     public String uploadThumbnail(String thumbnailName, MultipartFile file)
             throws Exception {
 
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String extension = thumbnailName.substring(thumbnailName.lastIndexOf("."));
 
         //ファイル名をタイムスタンプにする

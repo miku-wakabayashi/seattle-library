@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jp.co.seattle.library.common.util.BookUtil;
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.ErrorInfo;
+import jp.co.seattle.library.dto.ThumbnailInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ThumbnailService;
 
@@ -84,13 +86,22 @@ public class EditBookController {
             return "edit";
         }
 
-        String thumbnail = file.getOriginalFilename();
-        String url = "";
+        // 更新前のサムネイル情報を取得しておく
+        ThumbnailInfo beforeThumbnailInfo = booksService.getThumbnailInfo(bookInfo.getBookId());
+        bookInfo.setThumbnailName(beforeThumbnailInfo.getThumbnailName());
+        bookInfo.setThumbnailUrl(beforeThumbnailInfo.getThumbnailUrl());
 
-        if (!file.isEmpty()) {
+        String thumbnail = file.getOriginalFilename();
+
+        if (!StringUtils.isEmpty(thumbnail)) {
             try {
                 // サムネイル画像をアップロード
-                url = thumbnailService.uploadThumbnail(thumbnail, file);
+                String afterFileName = thumbnailService.uploadThumbnail(thumbnail, file);
+                // URLを取得
+                String thumbnailUrl = thumbnailService.getURL(afterFileName);
+
+                bookInfo.setThumbnailName(afterFileName);
+                bookInfo.setThumbnailUrl(thumbnailUrl);
 
             } catch (Exception e) {
                 // 異常終了時の処理
@@ -100,15 +111,11 @@ public class EditBookController {
                 return "addBook";
             }
         }
-        bookInfo.setThumbnailUrl(url);
-
-        // 更新前のサムネイルファイル名を取得しておく
-        String beforeThumbnaileName = booksService.getThumbnailName(bookInfo.getBookId());
 
         booksService.updateBookInfo(bookInfo);
 
         // 更新前のサムネイルファイル削除
-        thumbnailService.deleteTumbnail(beforeThumbnaileName);
+        thumbnailService.deleteTumbnail(beforeThumbnailInfo.getThumbnailName());
 
         model.addAttribute("resultMessage", "登録完了");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
