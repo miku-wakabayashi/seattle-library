@@ -19,9 +19,9 @@ public class MinioConfig {
     public MinioClient minioClient() {
 
         final MinioClient minioClient = MinioClient.builder()
-                .endpoint(environment.getProperty("s3.url"), 9000, false)
+                .endpoint(environment.getProperty("s3.url"), Integer.parseInt(environment.getProperty("s3.port")), false)
                 .credentials(environment.getProperty("s3.access-id"), environment.getProperty("s3.secret-key"))
-                .region("eu-east-1")
+                .region("ap-northeast-1")
                 .build();
         return minioClient;
     }
