@@ -28,7 +28,7 @@ public class DetailsController {
 
     @Transactional
     @RequestMapping(value = "/details", method = RequestMethod.POST)
-    public String insertBook(Locale locale,
+    public String detailsBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
             Model model) {
         logger.info("Welcome details.java! The client locale is {}.", locale);

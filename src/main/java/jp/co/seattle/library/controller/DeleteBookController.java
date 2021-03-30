@@ -32,6 +32,7 @@ public class DeleteBookController {
      * 削除処理サンプルメソッド
      *
      * @param locale ロケール情報
+     * @param bookId 書籍ID
      * @param model モデル情報
      * @return 遷移先画面名
      */
