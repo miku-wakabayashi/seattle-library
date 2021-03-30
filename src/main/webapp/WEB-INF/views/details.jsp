@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="resources/css/lightbox.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="resources/js/lightbox.js" /></script>
-<script src="resources/js/lending.js" /></script>
 </head>
 <body class="wrapper">
     <header>
