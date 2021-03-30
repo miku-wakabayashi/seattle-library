@@ -2,7 +2,6 @@ package jp.co.seattle.library.controller;
 
 import java.util.Locale;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.UsersService;
 
 /**
- * Handles requests for the application home page.
+ * アカウント作成コントローラー
  */
 @Controller //APIの入り口
 public class AccountController {
@@ -37,9 +36,9 @@ public class AccountController {
     /**
      * 新規アカウント作成
      *
-     * @param email
-     * @param name
-     * @param password
+     * @param email メールアドレス
+     * @param password パスワード
+     * @param passwordForCheck 確認用パスワード
      * @param model
      * @return　ホーム画面に遷移
      */
@@ -50,17 +49,15 @@ public class AccountController {
             @RequestParam("password") String password,
             @RequestParam("passwordForCheck") String passwordForCheck,
             Model model) {
+        // デバッグ用ログ
         logger.info("Welcome createAccount! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
         UserInfo userInfo = new UserInfo();
         userInfo.setEmail(email);
 
-        // 入力パスワード一致チェック
-        if (!StringUtils.equals(password, passwordForCheck)) {
-            model.addAttribute("errorMessage", "パスワードが一致しません。");
-            return "createAccount";
-        }
+
+        // TODO バリデーションチェック、パスワード一致チェック実装
 
         userInfo.setPassword(password);
         usersService.registUser(userInfo);

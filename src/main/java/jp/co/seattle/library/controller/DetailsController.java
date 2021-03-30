@@ -15,23 +15,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jp.co.seattle.library.service.BooksService;
 
 /**
- * Handles requests for the application home page.
+ * 詳細表示コントローラー
  */
 @Controller
-//APIの入り口 APIとは、他のソフトウェアが外部から自分のソフトウェアへアクセスし利用できるようにしたもの
-//ソフトウェアコンポーネントが互いにやりとりするのに使用するインタフェースの仕様
 public class DetailsController {
     final static Logger logger = LoggerFactory.getLogger(BooksService.class);
 
     @Autowired
     private BooksService bookdService;
 
+    /**
+     * 詳細画面に遷移する
+     * @param locale
+     * @param bookId
+     * @param model
+     * @return
+     */
     @Transactional
     @RequestMapping(value = "/details", method = RequestMethod.POST)
-    public String insertBook(Locale locale,
+    public String detailsBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
             Model model) {
-        logger.info("Welcome details.java! The client locale is {}.", locale);
+        // デバッグ用ログ
+        logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 

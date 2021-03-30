@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.co.seattle.library.dto.UserInfo;
 import jp.co.seattle.library.service.BooksService;
-import jp.co.seattle.library.service.ThumbnailService;
 import jp.co.seattle.library.service.UsersService;
 
 /**
- * Handles requests for the application home page.
+ * ログインコントローラー
  */
 @Controller /** APIの入り口 */
 public class LoginController {
@@ -25,10 +23,8 @@ public class LoginController {
     private BooksService booksService;
     @Autowired
     private UsersService usersService;
-    @Autowired
-    private ThumbnailService thumbnailService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String first(Model model) {
         return "login"; //jspファイル名
     }
@@ -47,12 +43,12 @@ public class LoginController {
             @RequestParam("password") String password,
             Model model) {
 
-        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
+        // TODO 下記のコメントアウトを外してサービスクラスを使用してください。
+//        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        if (!selectedUserInfo.getPassword().equals(password)) {
-            model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
-            return "login";
-        }
+        // TODO パスワードとメールアドレスの組み合わせ存在チェック実装
+        
+
 
         // 本の情報を取得して画面側に渡す
         model.addAttribute("bookList", booksService.getBookList());

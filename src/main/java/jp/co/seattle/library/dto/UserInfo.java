@@ -4,6 +4,10 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+/**
+ * ユーザー情報格納DTO
+ *
+ */
 @Configuration
 @Data
 public class UserInfo {

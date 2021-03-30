@@ -1,7 +1,5 @@
 package jp.co.seattle.library.service;
 
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +22,29 @@ public class UsersService {
 
     /**
      * ユーザー情報を登録する
-     *
-     * @return ユーザー情報
-     * @throws SQLException
+     * @param userInfo ユーザー情報
      */
     public void registUser(UserInfo userInfo) {
 
+        // SQL生成
         String sql = "INSERT INTO users (email, password,reg_date,upd_date) VALUES ('"
                 + userInfo.getEmail()
                 + "','"
                 + userInfo.getPassword()
                 + "',sysdate(),sysdate()" + ")";
+
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * ユーザー情報取得
+     * @param email メールアドレス
+     * @param password パスワード
+     * @return ユーザー情報
+     */
     public UserInfo selectUserInfo(String email, String password) {
-        String sql = "SELECT email,password FROM users WHERE email = '"
-                + email
-                + "'";
+        // TODO SQL生成
+        String sql = "";
 
         UserInfo selectedUserInfo = jdbcTemplate.queryForObject(sql, new UserCountRowMapper());
         return selectedUserInfo;

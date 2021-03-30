@@ -4,6 +4,10 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+/**
+ * 書籍詳細情報格納DTO
+ *
+ */
 @Configuration
 @Data
 public class BookDetailsInfo {
@@ -16,33 +20,23 @@ public class BookDetailsInfo {
 
     private String publisher;
 
-    private String description;
-
-    private String isbn;
-
-    private String publishDate;
-
     private String thumbnailUrl;
 
     private String thumbnailName;
 
-    private String lendingStatus;
 
     public BookDetailsInfo() {
 
     }
 
-    public BookDetailsInfo(int bookId, String title, String author, String publisher, String description, String isbn,
-            String publishDate, String thumbnailUrl, String thumbnailName, String lendingStatus) {
+    public BookDetailsInfo(int bookId, String title, String author, String publisher,
+            String thumbnailUrl, String thumbnailName) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.isbn = isbn;
-        this.publishDate = publishDate;
         this.thumbnailUrl = thumbnailUrl;
         this.thumbnailName = thumbnailName;
-        this.lendingStatus = lendingStatus;
     }
 
 }

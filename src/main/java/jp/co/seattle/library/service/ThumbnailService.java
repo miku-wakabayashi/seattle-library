@@ -8,21 +8,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
 import io.minio.http.Method;
 import jp.co.seattle.library.config.MinioConfig;
 
 /**
- * Handles requests for the application home page.
+ * サムネイルサービス
+ * 
+ * サムネイルに関してS3とのやりとりの処理を実装する
  */
-@Controller //APIの入り口
+@Controller
 public class ThumbnailService {
     final static Logger logger = LoggerFactory.getLogger(ThumbnailService.class);
 
@@ -34,7 +34,8 @@ public class ThumbnailService {
 
     /**
      * サムネイル画像をアップロードする
-     * @param thumbnail
+     * @param thumbnailName サムネイルファイル名
+     * @param file サムネイルファイル
      * @return アップロードファイル名
      * @throws Exception
      */
@@ -44,7 +45,7 @@ public class ThumbnailService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String extension = thumbnailName.substring(thumbnailName.lastIndexOf("."));
 
-        //ファイル名をタイムスタンプにする
+        //ファイル名をタイムスタンプの値にリネームする
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String timestampStr = (sdf.format(timestamp));
         String fileName = timestampStr + extension;
@@ -64,7 +65,7 @@ public class ThumbnailService {
 
     /**
      * URL取得
-     * @param fileName
+     * @param fileName サムネイルファイル名
      * @return ファイルのURL
      * @throws Exception
      */
@@ -78,19 +79,6 @@ public class ThumbnailService {
 
         return url;
 
-    }
-
-    public void deleteTumbnail(String fileName) {
-        if (!StringUtils.isEmpty(fileName)) {
-            try {
-                minioClient.removeObject(
-                        RemoveObjectArgs.builder().bucket(minioConfig.getMinioInfo("s3.bucket-name"))
-                                .object(S3_OBJECT_THUMBNAILS + fileName).build());
-
-            } catch (Exception e) {
-                logger.error(fileName + "：　サムネイル画像削除でエラーが発生しました。");
-            }
-        }
     }
 
 }

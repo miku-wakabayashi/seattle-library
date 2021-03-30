@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+/**
+ * 書籍基本情報格納DTO
+ */
 @Configuration
 @Data
 public class BookInfo {
@@ -24,6 +27,7 @@ public class BookInfo {
 
     }
 
+    // コンストラクタ
     public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String thumbnail) {
         this.bookId = bookId;
         this.title = title;
