@@ -1,5 +1,5 @@
 $(function(){
-	var lendingStatus = $('#lendingStatus').val();
+	var lendingStatus = $('#lendingStatus').text();
 	if(lendingStatus =='貸出し中'){
 		// 貸し出し中の場合返却ボタン有効化
 		$(".btn_returnBook").prop('disabled', false);

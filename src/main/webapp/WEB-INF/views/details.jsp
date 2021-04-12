@@ -48,7 +48,7 @@
                         </a>
                      </div>
                      <div class="lendingStatus_label">
-                     <p>${bookDetailsInfo.lendingStatus}</p>
+                     <p id="lendingStatus">${bookDetailsInfo.lendingStatus}</p>
                      </div>
                  </div>
                  <div class="content_right">
