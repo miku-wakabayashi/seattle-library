@@ -49,7 +49,7 @@ public class LoginController {
 
         UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        if (!selectedUserInfo.getPassword().equals(password)) {
+        if (selectedUserInfo == null || !selectedUserInfo.getPassword().equals(password)) {
             model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
             return "login";
         }
