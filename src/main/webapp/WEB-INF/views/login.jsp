@@ -22,7 +22,6 @@
                 <img class="mark" src="resources/img/logo.png" />
                 <div class="logo">Seattle Library</div>
             </div>
-            test
             <div class="authorization">
                 <div class="authorization_form">
                     <form method="post" action="login">
