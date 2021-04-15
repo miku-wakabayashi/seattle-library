@@ -83,6 +83,7 @@ public class BooksService {
                 + "',isbn='" + bookInfo.getIsbn()
                 + "',upd_date=sysdate()"
                 + " WHERE id =" + bookInfo.getBookId();
+
         jdbcTemplate.update(sql);
     }
 

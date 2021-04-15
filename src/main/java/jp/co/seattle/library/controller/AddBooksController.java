@@ -36,6 +36,7 @@ public class AddBooksController {
     @Autowired
     private ThumbnailService thumbnailService;
 
+    // 定数を
     private static final String UPLAD_ERROR = "サムネイル画像のアップロードに失敗しました";
 
     @RequestMapping(value = "/addBook", method = RequestMethod.GET) //value＝actionで指定したパラメータ
