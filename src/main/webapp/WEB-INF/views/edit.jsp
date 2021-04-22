@@ -40,7 +40,6 @@
                              <img class="book_noimg" src="${bookDetailsInfo.thumbnailUrl}">
                          </c:if>
                      </div>
-                     <input type="hidden" name="thumbnailName" value="${bookDetailsInfo.thumbnailName}">                    
                      <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
                  </div>
                  <div class="content_right">

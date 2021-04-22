@@ -60,7 +60,6 @@ public class EditBookController {
             @RequestParam("publisher") String publisher,
             @RequestParam("description") String description,
             @RequestParam("thumbnail") MultipartFile file,
-            @RequestParam("thumbnailName") String thumbnailName,
             @RequestParam("publishDate") String publishDateStr,
             @RequestParam("bookId") Integer bookId,
             @RequestParam("isbn") String isbn,
