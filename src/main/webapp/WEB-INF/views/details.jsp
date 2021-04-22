@@ -44,7 +44,7 @@
                             <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
                             	<img class="book_noimg" src="${bookDetailsInfo.thumbnailUrl}">
                             </c:if>
-                            <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
+                            <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">        
                         </a>
                      </div>
                      <div class="lendingStatus_label">

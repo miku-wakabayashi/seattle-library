@@ -39,7 +39,7 @@ public class UsersService {
         jdbcTemplate.update(sql);
     }
 
-    public UserInfo selectUserInfo(String email, String password) {
+    public UserInfo selectUserInfo(String email) {
         String sql = "SELECT email,password FROM users WHERE email = '"
                 + email
                 + "'";

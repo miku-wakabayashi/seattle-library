@@ -60,6 +60,7 @@ public class EditBookController {
             @RequestParam("publisher") String publisher,
             @RequestParam("description") String description,
             @RequestParam("thumbnail") MultipartFile file,
+            @RequestParam("thumbnailName") String thumbnailName,
             @RequestParam("publishDate") String publishDateStr,
             @RequestParam("bookId") Integer bookId,
             @RequestParam("isbn") String isbn,
@@ -115,7 +116,9 @@ public class EditBookController {
         booksService.updateBookInfo(bookInfo);
 
         // 更新前のサムネイルファイル削除
-        thumbnailService.deleteTumbnail(beforeThumbnailInfo.getThumbnailName());
+        if(!StringUtils.isEmpty(thumbnail)) {
+            thumbnailService.deleteTumbnail(beforeThumbnailInfo.getThumbnailName());
+        }
 
         model.addAttribute("resultMessage", "登録完了");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));

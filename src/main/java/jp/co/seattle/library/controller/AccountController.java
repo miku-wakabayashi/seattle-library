@@ -61,6 +61,12 @@ public class AccountController {
             model.addAttribute("errorMessage", "パスワードが一致しません。");
             return "createAccount";
         }
+        
+        // 既に同じメールアドレスで登録済みかチェック
+        if(usersService.selectUserInfo(email)==null) {
+            model.addAttribute("errorMessage", "既にそのメールアドレスは登録済みです。");
+            return "createAccount";
+        }
 
         userInfo.setPassword(password);
         usersService.registUser(userInfo);

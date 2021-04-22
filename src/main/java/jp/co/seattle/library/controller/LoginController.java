@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.dto.UserInfo;
 import jp.co.seattle.library.service.BooksService;
-import jp.co.seattle.library.service.ThumbnailService;
 import jp.co.seattle.library.service.UsersService;
 
 /**
@@ -25,8 +24,6 @@ public class LoginController {
     private BooksService booksService;
     @Autowired
     private UsersService usersService;
-    @Autowired
-    private ThumbnailService thumbnailService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
     public String first(Model model) {
@@ -47,7 +44,7 @@ public class LoginController {
             @RequestParam("password") String password,
             Model model) {
 
-        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
+        UserInfo selectedUserInfo = usersService.selectUserInfo(email);
 
         if (selectedUserInfo == null || !selectedUserInfo.getPassword().equals(password)) {
             model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
