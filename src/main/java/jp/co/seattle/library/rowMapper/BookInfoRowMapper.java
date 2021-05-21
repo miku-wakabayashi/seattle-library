@@ -11,19 +11,18 @@ import jp.co.seattle.library.dto.BookInfo;
 @Configuration
 public class BookInfoRowMapper implements RowMapper<BookInfo> {
 
-	@Override
-	public BookInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-		// Query結果（ResultSet rs）を、オブジェクトに格納する実装
-		BookInfo bookInfo = new BookInfo();
+    @Override
+    public BookInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+        // Query結果（ResultSet rs）を、オブジェクトに格納する実装
+        BookInfo bookInfo = new BookInfo();
 
-		bookInfo.setBookId(rs.getInt("id"));
-		bookInfo.setTitle(rs.getString("title"));
-		bookInfo.setAuthor(rs.getString("author"));
-		bookInfo.setPublisher(rs.getString("publisher"));
-		bookInfo.setPublishDate(rs.getString("publish_date"));
-		bookInfo.setDescription(rs.getString("description"));
-		bookInfo.setThumbnail(rs.getString("thumbnail"));
-		return bookInfo;
-	}
+        bookInfo.setBookId(rs.getInt("id"));
+        bookInfo.setTitle(rs.getString("title"));
+        bookInfo.setAuthor(rs.getString("author"));
+        bookInfo.setPublisher(rs.getString("publisher"));
+        bookInfo.setPublishDate(rs.getString("publish_date"));
+        bookInfo.setThumbnail(rs.getString("thumbnail_url"));
+        return bookInfo;
+    }
 
 }

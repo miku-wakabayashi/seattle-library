@@ -18,32 +18,29 @@
     <div class="wrapper">
         <main>
             <div class="authorization_head">
-                <img class="mark" src="../team19/resources/img/logo.png" />
+            	<img class="mark" src="resources/img/logo.png" />
                 <div class="logo">Seattle Library</div>
             </div>
             <div class="authorization">
                 <div class="authorization_form">
-                    <form method="post" action="newAccount">
+                    <form method="post" action="createAccount">
                         <div class="title">アカウントの作成</div>
-                        <label class="label">ユーザー名</label>
-                        <input type="text" class="input" id="name" name="name" autocomplete="off" />
-                        <div class="error">ユーザー名を入力してください。</div>
                         <label class="label">メールアドレス</label>
-                        <input type="text" class="input" id="email" name="email" autocomplete="off" />
-                        <div class="error">メールアドレスを入力してください。</div>
+                        <input type="email" class="input" id="email" name="email" autocomplete="off" required>
                         <label class="label">パスワード</label>
-                        <input type="password" class="input" id="password1" name="password1" />
-                        <div class="error">パスワードを入力してください。</div>
-                        <label class="label">パスワード（再入力）</label>
-                        <input type="password" class="input" id="password2" name="password2" />
-                        <div class="error">パスワードが一致しません。</div>
-                        <input type="submit" class="button primary" value="作成する" />
+                        <input type="password" class="input" id="password" name="password" required>
+                        <label class="label">パスワード（確認用）</label>
+                        <input type="password" class="input" id="passwordForCheck" name="passwordForCheck" required>
+                        <c:if test="${!empty errorMessage}">
+							 <div class="error">${errorMessage}</div>
+						</c:if>
+                        <input type="submit" class="button primary" value="作成する" >
                     </form>
                 </div>
                 <div class="authorization_navi">
                     <label class="authorization_text">すでにアカウントをお持ちですか？</label>
                     <form method="get" action="<%=request.getContextPath()%>/">
-					<a href="javascript:void(0)" onclick="this.parentNode.submit()">ログイン</a>
+						<a class="authorization_link marker" href="javascript:void(0)" onclick="this.parentNode.submit()">ログイン</a>
 					</form>
                 </div>
             </div>

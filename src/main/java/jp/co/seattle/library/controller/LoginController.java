@@ -2,10 +2,16 @@ package jp.co.seattle.library.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jp.co.seattle.library.dto.UserInfo;
+import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.UsersService;
 
 /**
  * Handles requests for the application home page.
@@ -14,8 +20,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    @Autowired
+    private BooksService booksService;
+    @Autowired
+    private UsersService usersService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
     public String first(Model model) {
         return "login"; //jspファイル名
+    }
+
+    /**
+     * ログイン処理
+     *
+     * @param email メールアドレス
+     * @param password パスワード
+     * @param model
+     * @return　ホーム画面に遷移
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            Model model) {
+
+        UserInfo selectedUserInfo = usersService.selectUserInfo(email);
+
+        if (selectedUserInfo == null || !selectedUserInfo.getPassword().equals(password)) {
+            model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
+            return "login";
+        }
+
+        // 本の情報を取得して画面側に渡す
+        model.addAttribute("bookList", booksService.getBookList());
+        return "home";
+
     }
 }

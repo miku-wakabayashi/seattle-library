@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="resources/css/lightbox.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="resources/js/lightbox.js" /></script>
+<script src="resources/js/lending.js" /></script>
 </head>
 <body class="wrapper">
     <header>
@@ -36,46 +37,62 @@
                 <div class="content_left">
                     <span>書籍の画像</span>
                      <div class="book_thumnail">
-                        <a href="resources/thumbnails/${bookInfo.thumbnail}" data-lightbox="image-1">
-                            <c:if test="${empty bookInfo.thumbnail}">
+                        <a href="${bookDetailsInfo.thumbnailUrl}" data-lightbox="image-1">
+                            <c:if test="${empty bookDetailsInfo.thumbnailUrl}">
                                 <img class="book_noimg" src="resources/img/noImg.png">
                             </c:if>
-                            <c:if test="${!empty bookInfo.thumbnail}">
-                                <img class="book_noimg" src="resources/thumbnails/${bookInfo.thumbnail}">
+                            <c:if test="${!empty bookDetailsInfo.thumbnailUrl}">
+                            	<img class="book_noimg" src="${bookDetailsInfo.thumbnailUrl}">
                             </c:if>
-                            <input type="hidden" name="bookId" value="${bookInfo.bookId}">
+                            <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">        
                         </a>
+                     </div>
+                     <div class="lendingStatus_label">
+                     <p id="lendingStatus">${bookDetailsInfo.lendingStatus}</p>
                      </div>
                  </div>
                  <div class="content_right">
                      <div>
                          <span>書籍名</span>
-                         <p>${bookInfo.title}</p>
+                         <p>${bookDetailsInfo.title}</p>
                      </div>
                      <div>
                          <span>著者名</span>
-                         <p>${bookInfo.author}</p>
+                         <p>${bookDetailsInfo.author}</p>
                      </div>
                      <div>
                          <span>出版社</span>
-                         <p>${bookInfo.publisher}</p>
+                         <p>${bookDetailsInfo.publisher}</p>
                      </div>
                      <div>
                          <span>出版日</span>
-                         <p>${bookInfo.publishDate}</p>
+                         <p>${bookDetailsInfo.publishDate}</p>
+                     </div>
+                     <div>
+                         <span>ISBN</span>
+                         <p>${bookDetailsInfo.isbn}</p>
                      </div>
                      <div>
                          <span>説明文</span>
-                         <p>${bookInfo.description}</p>
+                         <p>${bookDetailsInfo.description}</p>
                      </div>
                  </div>
             </div>
             <div class="edtDelBookBtn_box">
+                <form method="post" action="rentBook">
+                    <button type="submit" class="btn_rentBook" disabled="disabled">借りる</button>
+                    <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
+                </form>
+                <form method="post" action="returnBook">
+                    <button type="submit" class="btn_returnBook" disabled="disabled">返す</button>
+                    <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
+                </form>
+
                 <form method="post" action="editBook">
-                    <button type="submit" value="${bookInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
                 </form>
                 <form method="post" action="deleteBook">
-                    <button type="submit" value="${bookInfo.bookId}" name="bookId" class="btn_deleteBook" >削除</button>
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook" >削除</button>
                 </form>
             </div>
     </main>

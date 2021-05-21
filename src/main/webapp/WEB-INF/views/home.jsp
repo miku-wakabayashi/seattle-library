@@ -26,17 +26,14 @@
     </header>
     <main>
         <h1>Home</h1>
-        <a href="<%= request.getContextPath()%>/addBook" class="btn_addBook">書籍の追加</a>
+        <a href="<%= request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
+		<a href="<%= request.getContextPath()%>/bulkRegistration" class="btn_bulk_book">一括登録</a>
 
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
                 <div class="error_msg">${resultMessage}</div>
             </c:if>
             <div>
-            <!-- JSTLのCoreタグライブラリで繰り返し処理。items属性に集合の値、var属性に集合の要素を指定。先頭のcはPrefix属性で、taglibで任意の値を指定できる。-->
-                <c:if test="${!empty resultMessage}">
-                    <div class="error_msg">${resultMessage}</div>
-                </c:if>
                 <div class="booklist">
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
@@ -46,7 +43,7 @@
                                         <img class="book_noimg" src="resources/img/noImg.png">
                                     </c:if>
                                     <c:if test="${!empty bookInfo.thumbnail}">
-                                        <img class="book_img" src="resources/thumbnails/${bookInfo.thumbnail}">
+                                        <img class="book_noimg" src="${bookInfo.thumbnail}">
                                     </c:if>
                                 </a>
                             <input type="hidden" name="bookId" value="${bookInfo.bookId}">

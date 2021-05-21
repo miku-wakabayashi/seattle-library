@@ -27,22 +27,21 @@
                     <form method="post" action="login">
                         <div class="title">ログイン</div>
                         <label class="label">メールアドレス</label>
-                        <input type="text" class="input" name="email" id="email" autocomplete="off" />
+                        <input type="text" class="input" name="email" id="email" autocomplete="off" required/>
                         <label class="label">パスワード</label>
-                        <input type="password" class="input" id="password" name="password" />
+                        <input type="password" class="input" id="password" name="password" required/>
 
                         <input type="submit" class="button primary" value="ログイン" />
                          <c:if test="${!empty errorMessage}">
-							 <div class="error">ログインに失敗しました。${errorMessage}</div>
+							 <div class="error">${errorMessage}</div>
 						</c:if>
 
                     </form>
                 </div>
                 <div class="authorization_navi">
                     <label class="authorization_text">まだアカウントをお持ちでないですか？</label>
-
-                    <a class="authorization_link marker" href="<%=request.getContextPath()%>/account">アカウント作成</a>
-                </div>
+                    <a class="authorization_link marker" href="<%=request.getContextPath()%>/newAccount">アカウント作成</a>
+             </div>
             </div>
 
         <footer>

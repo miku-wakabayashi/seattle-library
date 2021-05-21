@@ -16,8 +16,6 @@ public class BookInfo {
 
     private String publisher;
 
-    private String description;
-
     private String publishDate;
 
     private String thumbnail;
@@ -26,14 +24,11 @@ public class BookInfo {
 
     }
 
-    public BookInfo(int bookId, String title, String author, String publisher, String description,
-            String publishDate, String thumbnail) {
+    public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String thumbnail) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.description = description;
-        //        this.thumbnailBlob = thumbnailBlob;
         this.publishDate = publishDate;
         this.thumbnail = thumbnail;
     }

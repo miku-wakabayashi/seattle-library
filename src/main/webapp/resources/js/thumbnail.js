@@ -1,9 +1,9 @@
 $(function(){
   //画像ファイルプレビュー表示のイベント追加 fileを選択時に発火するイベントを登録
-  $('form').on('change', 'input[type="file"]', function(e) {
+  $('#thumbnail').on('change', function(e) {
     var file = e.target.files[0],
         reader = new FileReader(),
-        $preview = $(".preview");
+        $preview = $(".book_thumnail");
         t = this;
 
     // 画像ファイル以外の場合は何もしない
@@ -20,15 +20,13 @@ $(function(){
         $preview.append($('<img>').attr({
                   src: e.target.result,
                   width: "150px",
-                  class: "preview",
+                  class: "book_thumnail",
                   title: file.name
               }));
       };
     })(file);
 
     reader.readAsDataURL(file);
-  });
+    });
+
 });
-
-
-
