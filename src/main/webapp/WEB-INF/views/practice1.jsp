@@ -43,41 +43,44 @@
             </div> 
             <div class="l-siteHeader__main_wrapper">
                 <div class="l-siteHeader__main">
-                    <div class="l-siteHeader__container l-siteHeader__mainContainer">
                         <p class="l-siteHeader__siteLogo">
                             <img src="https://www.jalan.net/assets/img/common/site-logo.svg">
                         </p>
-                    </div>
-                    <div class="l-siteHeader__mainNavsContainer">
+                    
                         <div class="l-siteHeader__mainTopNavs">
-                            <p class="l-siteHeader__userName">こんにちは♪ゲストさん</p>
-                            <ul class="l-siteHeader__userEnterance">
-                                <li class="l-siteHeader__userEnteranceItem">
-                                    <a href="https://www.jalan.net/ji/pc/jit6001LoginBack.do?TEMP1=&TEMP4=LEVEL_K&TEMP5=https://www.jalan.net/%3Fccnt%3Dglobal_navi">ログイン</a>
-                                </li>
-                                <li class="l-siteHeader__userEnteranceItem">
-                                    <a href="https://www.jalan.net/ji/pc/jit2001.do?FNC=JIPFN004">会員登録</a>
-                            </ul>
-                            <a class="l-siteHeader__stageGuide" href="https://www.jalan.net/theme/jalan_stage_program/index.html?ccnt=global_navi">
-                                <p class="l-siteHeader__stageGuideTitle">
-                                    <img src="https://www.jalan.net/img/logo.stage.png">
-                                    <span class="l-siteHeader__stageGuideTitleItem">お得な特典をみる</span>           
-                                </p>
-                            </a>
-                            <ul class="siteHeader__mypageLinks">
-                                <li class="l-siteHeader__mypageLink">
-                                    <a href="https://www.jalan.net/jalan/doc/howto/03yoyaku.html">予約照会・変更・キャンセル</a>
-                                </li>
-                                <li class="informationBoxMountPoint">
-                                    お知らせ
-                                </li>
-                                <li>
-                                    <a href="https://www.jalan.net/uw/uwp8000/uww8010.do">マイページ</a>
-                               </li>
-                            
-                            </ul>
-                        </div>
-                    </div>          
+                            <div class="l-siteHeader__userWrapper">
+                                <p class="l-siteHeader__userName">こんにちは♪ゲストさん</p>
+                                <ul class="l-siteHeader__userEnterance">
+                                    <li class="l-siteHeader__userEnteranceItem">
+                                        <a href="https://www.jalan.net/ji/pc/jit6001LoginBack.do?TEMP1=&TEMP4=LEVEL_K&TEMP5=https://www.jalan.net/%3Fccnt%3Dglobal_navi">ログイン</a>
+                                    </li>
+                                    <li class="l-siteHeader__userEnteranceItem">
+                                        <a href="https://www.jalan.net/ji/pc/jit2001.do?FNC=JIPFN004">会員登録</a>
+                                </ul>
+                                <a class="l-siteHeader__stageGuide" href="https://www.jalan.net/theme/jalan_stage_program/index.html?ccnt=global_navi">
+                                    <p class="l-siteHeader__stageGuideTitle">
+                                        <img src="https://www.jalan.net/img/logo.stage.png">
+                                        <span class="l-siteHeader__stageGuideTitleItem">お得な特典をみる</span>           
+                                    </p>
+                                </a>                            
+                            </div>
+                            <div class="siteHeader__mypageLinksWrapper">
+                                <ul class="siteHeader__mypageLinks">
+                                    <li class="l-siteHeader__mypageLink">
+                                        <a href="https://www.jalan.net/jalan/doc/howto/03yoyaku.html">予約照会・変更・キャンセル</a>
+                                    </li>
+                                    <li class="informationBoxMountPoint">
+                                        <div class="">
+                                        お知らせ
+                                        </div>
+                                        
+                                    </li>
+                                    <li>
+                                        <a href="https://www.jalan.net/uw/uwp8000/uww8010.do">マイページ</a>
+                                   </li>                        
+                                </ul>                 
+                            </div>
+                        </div>         
                 </div> 
             </div>
         </header>
