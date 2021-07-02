@@ -27,7 +27,7 @@ public class LoginController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET) //value＝＞実行した場所
     public String first(Model model) {
-        return "login"; //jspファイル名
+        return "practice1"; //jspファイル名
     }
 
     /**
